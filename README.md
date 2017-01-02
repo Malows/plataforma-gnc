@@ -1,1 +1,1 @@
-#Plataforma GNC
+# Plataforma GNC
