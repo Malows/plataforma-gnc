@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Titular;
+use App\Vehiculo;
 
 class TitularController extends Controller
 {
@@ -13,7 +15,11 @@ class TitularController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $titulares = ( $user->tipo_usuario === 1 ) ?
+          Titular::all() : Titular::where('id_usuario', $user->id) ;
+        $titulares->sortBy('apellido')->sortBy('nombre')->paginate(20);
+        return view('')->with('titulares',$titulares);
     }
 
     /**
@@ -23,7 +29,7 @@ class TitularController extends Controller
      */
     public function create()
     {
-        //
+        return view('');
     }
 
     /**
@@ -34,7 +40,10 @@ class TitularController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $titular = new Titular( $request->all() );
+        $titular->id_usuario = Auth::user()->id;
+        $titular->save();
+        return redirect()->route('');
     }
 
     /**
@@ -45,7 +54,10 @@ class TitularController extends Controller
      */
     public function show($id)
     {
-        //
+        $titular = Titular::find($id);
+        $titular->vehiculos;
+        $titular->localidad;
+        return view('')->with('titular',$titular);
     }
 
     /**
@@ -56,7 +68,13 @@ class TitularController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $vehiculos = ( $user->tipo_usuario === 1 ) ?
+          Vehiculo::all() : Vehiculo::where('id_usuario', $user->id) ;
+
+        $titular = Titular::find($id);
+        $titular->vehiculos;
+        return view('')->with('titular',$titular)->with('vehiculos',$vehiculos);
     }
 
     /**
@@ -68,7 +86,13 @@ class TitularController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $titular = Titular::find($id);
+        $titular->fill( $request->all() );
+
+        $titular->id_usuario = ( $titular->id_usuario ) ?
+          $titular->id_usuario : Auth::user()->id;
+        $titular->save();
+        return redirect()->route('');
     }
 
     /**
@@ -79,6 +103,8 @@ class TitularController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $titular = Titular::find($id);
+        $titular->delete();
+        return redirect()->route('');
     }
 }

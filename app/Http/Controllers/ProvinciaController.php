@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Provincia;
 
 class ProvinciaController extends Controller
 {
@@ -13,7 +14,8 @@ class ProvinciaController extends Controller
      */
     public function index()
     {
-        //
+        $provincias = Provincia::sortBy('nombre')->get();
+        return view('')->with('provincias',$provincias);
     }
 
     /**
@@ -23,7 +25,7 @@ class ProvinciaController extends Controller
      */
     public function create()
     {
-        //
+        return view('');
     }
 
     /**
@@ -34,7 +36,9 @@ class ProvinciaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $provincia = new Provincia( $request->all() );
+        $provincia->save();
+        return redirect()->route('');
     }
 
     /**
@@ -45,7 +49,8 @@ class ProvinciaController extends Controller
      */
     public function show($id)
     {
-        //
+        $provincia = Provincia::find($id);
+        return view('')->with('provincia',$provincia);
     }
 
     /**
@@ -56,7 +61,8 @@ class ProvinciaController extends Controller
      */
     public function edit($id)
     {
-        //
+      $provincia = Provincia::find($id);
+      return view('')->with('provincia',$provincia);
     }
 
     /**
@@ -68,7 +74,9 @@ class ProvinciaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $provincia = Provincia::find($id);
+      $provincia->fill( $request->all() );
+      return redirect()->route('');
     }
 
     /**
@@ -79,6 +87,8 @@ class ProvinciaController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $provincia = Provincia::find($id);
+      $provincia->delete();
+      return redirect()->route('');
     }
 }

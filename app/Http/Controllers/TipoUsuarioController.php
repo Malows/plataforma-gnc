@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\TipoUsuario;
 
 class TipoUsuarioController extends Controller
 {
@@ -13,7 +14,8 @@ class TipoUsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $tipos = TipoUsuario::sortBy('id');
+        return view('')->with('tipos_usuarios',$tipos);
     }
 
     /**
@@ -23,7 +25,7 @@ class TipoUsuarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('');
     }
 
     /**
@@ -34,7 +36,9 @@ class TipoUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tipo = new TipoUsuario( $request->all() );
+        $tipo->save();
+        return redirect()->route('');
     }
 
     /**
@@ -45,7 +49,8 @@ class TipoUsuarioController extends Controller
      */
     public function show($id)
     {
-        //
+        $tipo = TipoUsuario::find($id);
+        return view('')->with('tipo_usuario',$tipo);
     }
 
     /**
@@ -56,7 +61,8 @@ class TipoUsuarioController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tipo = TipoUsuario::find($id);
+        return view('')->with('tipo_usuario',$tipo)
     }
 
     /**
@@ -68,7 +74,9 @@ class TipoUsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $tipo = TipoUsuario::find($id);
+        $tipo->fill( $request-all() );
+        return redirect()->route('');
     }
 
     /**
@@ -79,6 +87,8 @@ class TipoUsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tipo = TipoUsuario::find($id);
+        $tipo->delete();
+        return redirect()->route('');
     }
 }

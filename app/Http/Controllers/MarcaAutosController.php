@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\MarcaAutos;
 
 class MarcaAutosController extends Controller
 {
@@ -13,7 +14,14 @@ class MarcaAutosController extends Controller
      */
     public function index()
     {
-        //
+      $user = Auth::user();
+      $marcas_registradas_por_usuario = MarcaAutos::where('id_usuario', $user->id)
+        ->sortBy('nombre');
+      $marcas_de_otros_usuarios = MarcaAutos::where('id_usuario', '!=', $user->id)
+        ->sortBy('nombre');
+      $marcas = $marcas_registradas_por_usuario->union( $marcas_de_otros_usuarios);
+      $marcas->paginate(30);
+      return view('')->with('marcas', $marcas);
     }
 
     /**
@@ -23,7 +31,7 @@ class MarcaAutosController extends Controller
      */
     public function create()
     {
-        //
+        return view('');
     }
 
     /**
@@ -34,7 +42,10 @@ class MarcaAutosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $marca = new MarcaAutos( $request->all() );
+        $marca->id_usuario = Auth::user()->id;
+        $marca->save();
+        return redirect()->route('');
     }
 
     /**
@@ -45,7 +56,8 @@ class MarcaAutosController extends Controller
      */
     public function show($id)
     {
-        //
+        $marca = MarcaAutos::find($id);
+        return view('')->with('marca', $marca);
     }
 
     /**
@@ -56,7 +68,8 @@ class MarcaAutosController extends Controller
      */
     public function edit($id)
     {
-        //
+          $marca = MarcaAutos::find($id);
+          return view('')->with('marca', $marca);
     }
 
     /**
@@ -68,7 +81,12 @@ class MarcaAutosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+          $marca = MarcaAutos::find($id);
+          $marca->fill( $request->all() );
+          $marca->id_usuario = ( $marca->id_usuario ) ?
+            $marca->id_usuario : Auth::user()->id;
+          $marca->save();
+          return redirect()->route('');
     }
 
     /**
@@ -79,6 +97,8 @@ class MarcaAutosController extends Controller
      */
     public function destroy($id)
     {
-        //
+          $marca = MarcaAutos::find($id);
+          $marca->delete();
+          return redirect()->route('');
     }
 }

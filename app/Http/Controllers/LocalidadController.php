@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Provincia;
+use App\Localidad;
 
 class LocalidadController extends Controller
 {
@@ -11,9 +13,18 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $localidades = Localidad::search($request)
+          ->orderBy('id_provincia', 'DESC')
+          ->orderBy('nombre', 'ASC')
+          ->paginate(30);
+
+          $localidades->each( function( $localidad ) {
+            $localidad->provincia;
+          })
+
+          return view('')->with('localidades', $localidades);
     }
 
     /**
@@ -23,7 +34,9 @@ class LocalidadController extends Controller
      */
     public function create()
     {
-        //
+        $provincias = Provincia::orderBy('nombre','ASC')->pluck('nombre','id');
+
+        return view()->with('provincias', $provincias);
     }
 
     /**
@@ -34,7 +47,9 @@ class LocalidadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $localidad = new Localidad( $request->all() );
+        $localidad->save();
+        return redirect()->route('');
     }
 
     /**
@@ -45,7 +60,8 @@ class LocalidadController extends Controller
      */
     public function show($id)
     {
-        //
+        $localidad = Localidad::find($id);
+        return view('')->with('localidad', $localidad);
     }
 
     /**
@@ -56,7 +72,8 @@ class LocalidadController extends Controller
      */
     public function edit($id)
     {
-        //
+        $localidad = Localidad::find($id);
+        return view('')->with('localidad', $localidad);
     }
 
     /**
@@ -68,7 +85,10 @@ class LocalidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $localidad = Localidad::find($id);
+        $localidad->fill( $request->all() );
+        $localidad->save();
+        return redirect()->route('');
     }
 
     /**
@@ -79,6 +99,8 @@ class LocalidadController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $localidad = Localidad::find($id);
+        $localidad->delete();
+        return redirect()->route('');
     }
 }

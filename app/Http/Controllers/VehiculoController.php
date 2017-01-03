@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Titular;
+use App\Vehiculo;
 
 class VehiculoController extends Controller
 {
@@ -13,7 +15,16 @@ class VehiculoController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $vehiculos = ( $user->tipo_usuario == 1 ) ?
+          Vehiculo::all() : Vehiculo::where('id_usuario', $user->id_usuario);
+        $vehiculos->sortBy('update_at')->paginate(20);
+        $vehiculos->each(function($vehiculo){
+          $vehiculo->titular;
+          $vehiculo->marca;
+          $vehiculo->modelo;
+        });
+        return view('')->with('vehiculos',$vehiculos);
     }
 
     /**
@@ -23,7 +34,7 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        //
+        return view('');
     }
 
     /**
@@ -34,7 +45,10 @@ class VehiculoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $vehiculo = new Vehiculo( $request->all() );
+        $vehiculo->id_usuario = Auth::user()->id;
+        $vehiculo->save();
+        return redirect()->route('');
     }
 
     /**
@@ -45,7 +59,11 @@ class VehiculoController extends Controller
      */
     public function show($id)
     {
-        //
+        $vehiculo = Vehiculo::find($id);
+        $vehiculo->marca;
+        $vehiculo->modelo;
+        $vehiculo->titular;
+        return view('')->with('vehiculo',$vehiculo);
     }
 
     /**
@@ -56,7 +74,11 @@ class VehiculoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $vehiculo = Vehiculo::find($id);
+        $vehiculo->marca;
+        $vehiculo->modelo;
+        $vehiculo->titular;
+        return view('')->with('vehiculo',$vehiculo);
     }
 
     /**
@@ -68,7 +90,13 @@ class VehiculoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $vehiculo = Vehiculo::find($id);
+        $vehiculo->fill( $request->all() );
+        $vehiculo->id_usuario = ( $vehiculo->id_usuario ) ?
+          $vehiculo->id_usuario : Auth::user()->id;
+        $vehiculo->save();
+        return redirect()->route('');
+
     }
 
     /**
@@ -79,6 +107,8 @@ class VehiculoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $vehiculo = Vehiculo::find($id);
+        $vehiculo->delete();
+        return redirect()->route('');
     }
 }
