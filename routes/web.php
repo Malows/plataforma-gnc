@@ -22,4 +22,25 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
+
+    Route::group(['prefix'=> 'dashboard'], function (){ //example.com/dashboard/
+
+        Route::get('/', function (){
+
+        });
+        Route::group(['middleware' => 'permisos.admin'], function (){
+            Route::resource('/provincias',          'ProvinciaController');
+            Route::resource('/localidades',         'LocalidadController');
+            Route::resource('/tipo_de_usuarios',    'TipoUsuarioController');
+            Route::resource('/usuarios',            'UserController');
+        });
+
+        Route::group(['middleware' => 'permisos.cobre'],function (){
+            Route::resource('/vehiculos',           'VehiculoController');
+            Route::resource('/titulares',           'TitularController');
+            Route::resource('/marcas_de_autos',     'MarcaAutosController');
+            Route::resource('/modelos_de_autos',    'ModeloAutosController');
+        });
+
+    });
 });

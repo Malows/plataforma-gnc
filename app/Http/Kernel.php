@@ -52,5 +52,12 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'isOwnerOrAdmin' => \App\Http\Middleware\isOwnerOrAdmin::class,
+        'permisos.admin' => \App\Http\Middleware\PermisosAdmin::class,
+        'permisos.diamante' => \App\Http\Middleware\PermisosDiamante::class,
+        'permisos.platino' => \App\Http\Middleware\PermisosPlatino::class,
+        'permisos.oro' => \App\Http\Middleware\PermisosOro::class,
+        'permisos.plata' => \App\Http\Middleware\PermisosPlata::class,
+        'permisos.cobre' => \App\Http\Middleware\PermisosCobre::class,
     ];
 }

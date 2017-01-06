@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
-use App\TipoUsuario;
 
-class TipoUsuarioController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class TipoUsuarioController extends Controller
      */
     public function index()
     {
-        $tipos = TipoUsuario::sortBy('id');
-        return view('')->with('tipos_usuarios',$tipos);
+        $users = User::paginate(20);
+        return view('')->with('usuarios',$users);
     }
 
     /**
@@ -36,59 +36,61 @@ class TipoUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $tipo = new TipoUsuario( $request->all() );
-        $tipo->save();
-        return redirect()->route('');
+        $user = new User( $request->all() );
+
+        $user->save();
+        return redirect()->route('user.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $tipo = TipoUsuario::find($id);
-        return view('')->with('tipo_usuario',$tipo);
+        $usuario = User::find( $user );
+        return view('')->with('usuario',$usuario);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $tipo = TipoUsuario::find($id);
-        return view('')->with('tipo_usuario',$tipo);
+        $usuario = User::find( $user );
+        return view('')->with('usuario',$usuario);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $tipo = TipoUsuario::find($id);
-        $tipo->fill( $request-all() );
-        return redirect()->route('');
+        $usuario = User::find( $user );
+        $usuario->fill( $request->all() );
+        return redirect()->route('user.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $tipo = TipoUsuario::find($id);
-        $tipo->delete();
-        return redirect()->route('');
+        $usuario = User::find( $user );
+        $usuario->delete();
+        return redirect()->route('user.index');
     }
 }

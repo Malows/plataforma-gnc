@@ -45,7 +45,7 @@ class MarcaAutosController extends Controller
         $marca = new MarcaAutos( $request->all() );
         $marca->id_usuario = Auth::user()->id;
         $marca->save();
-        return redirect()->route('');
+        return redirect()->route('marcas_de_autos.index');
     }
 
     /**
@@ -86,7 +86,7 @@ class MarcaAutosController extends Controller
           $marca->id_usuario = ( $marca->id_usuario ) ?
             $marca->id_usuario : Auth::user()->id;
           $marca->save();
-          return redirect()->route('');
+          return redirect()->route('marcas_de_autos.index');
     }
 
     /**
@@ -99,6 +99,6 @@ class MarcaAutosController extends Controller
     {
           $marca = MarcaAutos::find($id);
           $marca->delete();
-          return redirect()->route('');
+          return redirect()->route('marcas_de_autos.index');
     }
 }

@@ -9,21 +9,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <meta name="description" content="Adminlte-laravel - {{ trans('adminlte_lang::message.landingdescription') }} ">
     <meta name="author" content="Malows">
 
-    {{--<meta property="og:title" content="Adminlte-laravel" />--}}
-    {{--<meta property="og:type" content="website" />--}}
-    {{--<meta property="og:description" content="Adminlte-laravel - {{ trans('adminlte_lang::message.landingdescription') }}" />--}}
-    {{--<meta property="og:url" content="http://demo.adminlte.acacha.org/" />--}}
-    {{--<meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE.png" />--}}
-    {{--<meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x600.png" />--}}
-    {{--<meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x314.png" />--}}
-    {{--<meta property="og:sitename" content="demo.adminlte.acacha.org" />--}}
-    {{--<meta property="og:url" content="http://demo.adminlte.acacha.org" />--}}
-
-    {{--<meta name="twitter:card" content="summary_large_image" />--}}
-    {{--<meta name="twitter:site" content="@acachawiki" />--}}
-    {{--<meta name="twitter:creator" content="@acacha1" />--}}
-
-    <title>{{ trans('adminlte_lang::message.landingdescriptionpratt') }}</title>
+    <title>{{ trans('message.platform_title') }}</title>
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
@@ -46,7 +32,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><b>adminlte-laravel</b></a>
+                <a class="navbar-brand" href="#"><b>{{ trans('message.platform_nickname') }}</b></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -58,7 +44,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                 <ul class="nav navbar-nav navbar-right">
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
-                        <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
+                        {{--<li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>--}}
                     @else
                         <li><a href="/home">{{ Auth::user()->name }}</a></li>
                     @endif
@@ -73,11 +59,13 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         <div class="container">
             <div class="row centered">
                 <div class="col-lg-12">
-                    <h1>Plataforma GNC</h1>
-                    <h3>A <a href="https://laravel.com/">Laravel</a> {{ trans('adminlte_lang::message.laravelpackage') }}
-                        scaffolding/boilerplate {{ trans('adminlte_lang::message.to') }} <a href="https://almsaeedstudio.com/preview">AdminLTE</a> {{ trans('adminlte_lang::message.templatewith') }}
-                        <a href="http://getbootstrap.com/">Bootstrap</a> 3.0 {{ trans('adminlte_lang::message.and') }} <a href="http://blacktie.co/demo/pratt/">Pratt</a> Landing page</h3>
-                    <h3><a href="{{ url('/register') }}" class="btn btn-lg btn-success">{{ trans('adminlte_lang::message.gedstarted') }}</a></h3>
+                    <h1>{{ trans('message.platform_title') }}</h1>
+                    <h3>{{ trans('message.platform_description') }}
+                        {{--{{ trans('adminlte_lang::message.to') }}--}}
+                        {{--{{ trans('adminlte_lang::message.templatewith') }}--}}
+                        {{--{{ trans('adminlte_lang::message.and') }}--}}
+                    </h3>
+                    <h3><a href="{{ url('/register') }}" class="btn btn-lg btn-success">{{ trans('message.get_started') }}</a></h3>
                 </div>
                 <div class="col-lg-2">
                     <h5>{{ trans('adminlte_lang::message.amazing') }}</h5>
@@ -103,23 +91,23 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <div id="intro">
         <div class="container">
             <div class="row centered">
-                <h1>{{ trans('adminlte_lang::message.designed') }}</h1>
+                <h1>{{ trans('message.landing_intro_title') }}</h1>
                 <br>
                 <br>
                 <div class="col-lg-4">
                     <img src="{{ asset('/img/intro01.png') }}" alt="">
-                    <h3>{{ trans('adminlte_lang::message.community') }}</h3>
-                    <p>{{ trans('adminlte_lang::message.see') }} <a href="https://github.com/acacha/adminlte-laravel">{{ trans('adminlte_lang::message.githubproject') }}</a>, {{ trans('adminlte_lang::message.post') }} <a href="https://github.com/acacha/adminlte-laravel/issues">{{ trans('adminlte_lang::message.issues') }}</a> {{ trans('adminlte_lang::message.and') }} <a href="https://github.com/acacha/adminlte-laravel/pulls">{{ trans('adminlte_lang::message.pullrequests') }}</a></p>
+                    <h3>{{ trans('message.landing_intro_message1') }}</h3>
+                    <p>{{ trans('message.landing_intro_message1_content') }}</p>
                 </div>
                 <div class="col-lg-4">
                     <img src="{{ asset('/img/intro02.png') }}" alt="">
-                    <h3>{{ trans('adminlte_lang::message.schedule') }}</h3>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    <h3>{{ trans('message.landing_intro_message2') }}</h3>
+                    <p>{{ trans('message.landing_intro_message2_content') }}</p>
                 </div>
                 <div class="col-lg-4">
                     <img src="{{ asset('/img/intro03.png') }}" alt="">
-                    <h3>{{ trans('adminlte_lang::message.monitoring') }}</h3>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    <h3>{{ trans('message.landing_intro_message3') }}</h3>
+                    <p>{{ trans('message.landing_intro_message3_content') }}</p>
                 </div>
             </div>
             <br>
@@ -131,7 +119,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <div id="features">
         <div class="container">
             <div class="row">
-                <h1 class="centered">{{ trans('adminlte_lang::message.whatnew') }}</h1>
+                <h1 class="centered">{{ trans('message.landing_features_title') }}</h1>
                 <br>
                 <br>
                 <div class="col-lg-6 centered">
@@ -139,19 +127,19 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                 </div>
 
                 <div class="col-lg-6">
-                    <h3>{{ trans('adminlte_lang::message.features') }}</h3>
+                    <h3>{{ trans('message.landing_features_subtitle') }}</h3>
                     <br>
                     <!-- ACCORDION -->
                     <div class="accordion ac" id="accordion2">
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                                    {{ trans('adminlte_lang::message.design') }}
+                                    {{ trans('message.landing_features_message1') }}
                                 </a>
                             </div><!-- /accordion-heading -->
                             <div id="collapseOne" class="accordion-body collapse in">
                                 <div class="accordion-inner">
-                                    <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                    <p>{{ trans('message.landing_features_message1_content') }}</p>
                                 </div><!-- /accordion-inner -->
                             </div><!-- /collapse -->
                         </div><!-- /accordion-group -->
@@ -160,12 +148,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                                    {{ trans('adminlte_lang::message.retina') }}
+                                    {{ trans('message.landing_features_message2') }}
                                 </a>
                             </div>
                             <div id="collapseTwo" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                    <p>{{ trans('message.landing_features_message2_content') }}</p>
                                 </div><!-- /accordion-inner -->
                             </div><!-- /collapse -->
                         </div><!-- /accordion-group -->
@@ -174,12 +162,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                                    {{ trans('adminlte_lang::message.support') }}
+                                    {{ trans('message.landing_features_message3') }}
                                 </a>
                             </div>
                             <div id="collapseThree" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                    <p>{{ trans('message.landing_features_message3_content') }}</p>
                                 </div><!-- /accordion-inner -->
                             </div><!-- /collapse -->
                         </div><!-- /accordion-group -->
@@ -188,12 +176,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-                                    {{ trans('adminlte_lang::message.responsive') }}
+                                    {{ trans('message.landing_features_message4') }}
                                 </a>
                             </div>
                             <div id="collapseFour" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                    <p>{{ trans('message.landing_features_message4_content') }}</p>
                                 </div><!-- /accordion-inner -->
                             </div><!-- /collapse -->
                         </div><!-- /accordion-group -->
@@ -209,7 +197,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <div id="showcase">
         <div class="container">
             <div class="row">
-                <h1 class="centered">{{ trans('adminlte_lang::message.screenshots') }}</h1>
+                <h1 class="centered">{{ trans('message.landing_showcase_title') }}</h1>
                 <br>
                 <div class="col-lg-8 col-lg-offset-2">
                     <div id="carousel-example-generic" class="carousel slide">

@@ -52,7 +52,7 @@ class ModeloAutosController extends Controller
         $modelo = new ModeloAutos( $request->all() );
         $modelo->id_usuario = Auth::user()->id;
         $modelo->save();
-        return redirect()->route('');
+        return redirect()->route('modelos_de_autos.index');
     }
 
     /**
@@ -96,7 +96,7 @@ class ModeloAutosController extends Controller
         $modelo->id_usuario = ( $modelo->id_usuario ) ?
           $modelo->id_usuario : Auth::user()->id;
         $modelo->save();
-        return redirect()->route('');
+        return redirect()->route('modelos_de_autos.index');
     }
 
     /**
@@ -109,6 +109,6 @@ class ModeloAutosController extends Controller
     {
       $modelo = ModeloAutos::find($id);
       $modelo->delete();
-      return redirect()->route('');
+      return redirect()->route('modelos_de_autos.index');
     }
 }

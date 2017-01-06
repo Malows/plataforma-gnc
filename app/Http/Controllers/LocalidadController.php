@@ -22,7 +22,7 @@ class LocalidadController extends Controller
 
           $localidades->each( function( $localidad ) {
             $localidad->provincia;
-          })
+          });
 
           return view('')->with('localidades', $localidades);
     }
@@ -49,7 +49,7 @@ class LocalidadController extends Controller
     {
         $localidad = new Localidad( $request->all() );
         $localidad->save();
-        return redirect()->route('');
+        return redirect()->route('localidades.index');
     }
 
     /**
@@ -88,7 +88,7 @@ class LocalidadController extends Controller
         $localidad = Localidad::find($id);
         $localidad->fill( $request->all() );
         $localidad->save();
-        return redirect()->route('');
+        return redirect()->route('localidades.index');
     }
 
     /**
@@ -101,6 +101,6 @@ class LocalidadController extends Controller
     {
         $localidad = Localidad::find($id);
         $localidad->delete();
-        return redirect()->route('');
+        return redirect()->route('localidades.index');
     }
 }

@@ -43,7 +43,7 @@ class TitularController extends Controller
         $titular = new Titular( $request->all() );
         $titular->id_usuario = Auth::user()->id;
         $titular->save();
-        return redirect()->route('');
+        return redirect()->route('titulares.index');
     }
 
     /**
@@ -92,7 +92,7 @@ class TitularController extends Controller
         $titular->id_usuario = ( $titular->id_usuario ) ?
           $titular->id_usuario : Auth::user()->id;
         $titular->save();
-        return redirect()->route('');
+        return redirect()->route('titulares.index');
     }
 
     /**
@@ -105,6 +105,6 @@ class TitularController extends Controller
     {
         $titular = Titular::find($id);
         $titular->delete();
-        return redirect()->route('');
+        return redirect()->route('titulares.index');
     }
 }

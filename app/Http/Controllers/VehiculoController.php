@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Titular;
+use Illuminate\Support\Facades\Auth;
 use App\Vehiculo;
 
 class VehiculoController extends Controller
@@ -48,7 +48,7 @@ class VehiculoController extends Controller
         $vehiculo = new Vehiculo( $request->all() );
         $vehiculo->id_usuario = Auth::user()->id;
         $vehiculo->save();
-        return redirect()->route('');
+        return redirect()->route('vehiculos.index');
     }
 
     /**
@@ -95,7 +95,7 @@ class VehiculoController extends Controller
         $vehiculo->id_usuario = ( $vehiculo->id_usuario ) ?
           $vehiculo->id_usuario : Auth::user()->id;
         $vehiculo->save();
-        return redirect()->route('');
+        return redirect()->route('vehiculos.index');
 
     }
 
@@ -109,6 +109,6 @@ class VehiculoController extends Controller
     {
         $vehiculo = Vehiculo::find($id);
         $vehiculo->delete();
-        return redirect()->route('');
+        return redirect()->route('vehiculos.index');
     }
 }

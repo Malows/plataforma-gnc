@@ -38,7 +38,7 @@ class ProvinciaController extends Controller
     {
         $provincia = new Provincia( $request->all() );
         $provincia->save();
-        return redirect()->route('');
+        return redirect()->route('provincias.index');
     }
 
     /**
@@ -76,7 +76,7 @@ class ProvinciaController extends Controller
     {
       $provincia = Provincia::find($id);
       $provincia->fill( $request->all() );
-      return redirect()->route('');
+      return redirect()->route('provincias.index');
     }
 
     /**
@@ -89,6 +89,6 @@ class ProvinciaController extends Controller
     {
       $provincia = Provincia::find($id);
       $provincia->delete();
-      return redirect()->route('');
+      return redirect()->route('provincias.index');
     }
 }
