@@ -36,7 +36,7 @@ class MarcasAutosTableSeeder extends Seeder
        ['nombre' => "Shelby"], ['nombre' => "Smart"], ['nombre' => "Spyker"],
        ['nombre' => "Spyker Cars"], ['nombre' => "Studebaker"], ['nombre' => "Subaru"],
        ['nombre' => "Suzuki"], ['nombre' => "Tesla"], ['nombre' => "Toyota"],
-       ['nombre' => "Volkswagen"], ['nombre' => "Volvo" ]];
+       ['nombre' => "Volkswagen"], ['nombre' => "Volvo"]];
 
      public function run()
      {

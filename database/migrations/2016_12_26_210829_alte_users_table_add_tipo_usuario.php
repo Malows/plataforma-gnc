@@ -14,13 +14,15 @@ class AlteUsersTableAddTipoUsuario extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-          $table->integer('tipo_usuario')->unsigned()->default(6)->after('password');
-          $table->boolean('habilitado')->default(true)->after('tipo_usuario');
-          $table->timestamp('fecha_de_licencia')->default(DB::raw('CURRENT_TIMESTAMP'));
-          $table->bigInteger('duracion_de_licencia')->unsigned();
-          $table->foreign('tipo_usuario')
+          $table->unsignedInteger('id_tipo_usuario')->default(6)->after('password');
+          $table->foreign('id_tipo_usuario')
             ->references('id')->on('tipos_usuarios')
             ->onDelete('cascade')->onUpdate('cascade');
+
+          $table->boolean('habilitado')->default(true);
+          $table->timestamp('fecha_de_licencia')->default(DB::raw('CURRENT_TIMESTAMP'));
+          $table->unsignedBigInteger('duracion_de_licencia');
+
         });
     }
 

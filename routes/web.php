@@ -26,8 +26,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix'=> 'dashboard'], function (){ //example.com/dashboard/
 
         Route::get('/', function (){
+            return view('home');
+        })->name('dashboard');
 
-        });
         Route::group(['middleware' => 'permisos.admin'], function (){
             Route::resource('/provincias',          'ProvinciaController');
             Route::resource('/localidades',         'LocalidadController');
@@ -35,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/usuarios',            'UserController');
         });
 
-        Route::group(['middleware' => 'permisos.cobre'],function (){
+        Route::group(['middleware' => 'permisos.bronce'],function (){
             Route::resource('/vehiculos',           'VehiculoController');
             Route::resource('/titulares',           'TitularController');
             Route::resource('/marcas_de_autos',     'MarcaAutosController');

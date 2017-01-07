@@ -73,25 +73,40 @@ return [
     'yourtext'                => 'Su Texto',
     'submit'                  => 'ENVIAR',
 
-    'logged'                  => 'Usted ingresó en el sistema!',
+    /*
+     * LOGIN
+     */
+
+    'login'                   => 'Iniciar Sesión',
     'some_problems'           => 'Hay algunos problemas con su entrada.',
-    'sign_in_session'         => 'Inicia sesión para acceder',
-    'remember'                => 'Recuérdame',
+    'sign_in_session'         => 'Inicia sesión para acceder al sistema',
+    'remember_me'             => 'Recuérdame',
     'button_sign'             => 'Iniciar Sesión',
     'forgot_password'         => 'Olvidé mi contraseña',
+
+
+    /*
+     *  RESET PASSWORD
+     */
+    'password_click_reset'    => 'Haga clic aquí para restablecer la contraseña:',
+    'send_password'           => 'Enviar enlace',
+    'password_reset'          => 'Restablecer la contraseña',
+    'membreship'              => 'Ya soy miembro',
+
+    'logged'                  => 'Usted ingresó en el sistema!',
     'register_member'         => 'Registar un nuevo miembro',
     'terms'                   => 'Estoy de acuerdo con las',
     'conditions'              => 'Términos y Condiciones',
     'register'                => 'Registro',
-    'login'                   => 'Iniciar Sesión',
-    'membreship'              => 'Ya soy miembro',
-    'password_click_reset'    => 'Haga clic aquí para restablecer la contraseña:',
+
+
+
     'sign_Github'             => 'Entra con Github',
     'sign_Facebook'           => 'Entra con Facebook',
     'sign_Twitter'            => 'Entra con Twitter',
     'sign_Google+'            => 'Entra con Google+',
-    'send_password'           => 'Enviar el enlace para restablecer la contraseña',
-    'password_reset'          => 'Restablecer la contraseña',
+
+
     'page_not_found'          => 'Página no encontrada',
     '404_error'               => 'Página de error 404',
     'notfind_page'            => 'No hemos podido encontrar la página que estabas buscando.',
@@ -106,7 +121,7 @@ return [
     'service_unavailable'     => 'Servicio no disponible',
     '503_error'               => 'Página de error 503',
     'level'                   => 'Nivel',
-    'here'                    => 'Aquí',
+    'here'                    => 'Mensaje Aquí',
     'descriptionpackage'      => 'Un laravel 5 paquete que cambia de forma predeterminada Laravel scaffolding/boilerplate a la plantilla AdminLTE',
     'createdby'               => 'Creado por',
     'seecode'                 => 'Ver código en',
@@ -154,9 +169,25 @@ return [
     'and'                     => 'y',
 
 
+    /*
+     *  RECURSOS
+     */
+    'list'                  => 'Lista',
+    'create'                => 'Crear',
+    'edit'                  => 'Editar',
+    'update'                => 'Actualizar',
+    'read'                  => 'Leer',
+    'show'                  => 'Ver',
+    'delete'                => 'Eliminar',
 
-
-
+    'marcas_de_autos'       => 'Marcas de autos',
+    'modelos_de_autos'      => 'Modelos de autos',
+    'localidades'           => 'Localidades',
+    'provincias'            => 'Provincias',
+    'usuarios'              => 'Usuarios',
+    'tipo_de_usuarios'      => 'Tipos de usuarios',
+    'vehiculos'             => 'Vehículos',
+    'titulares'             => 'Titulares',
 
 
     'email'                   => 'Correo Electrónico',

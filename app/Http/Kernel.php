@@ -53,11 +53,11 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'isOwnerOrAdmin' => \App\Http\Middleware\isOwnerOrAdmin::class,
-        'permisos.admin' => \App\Http\Middleware\PermisosAdmin::class,
-        'permisos.diamante' => \App\Http\Middleware\PermisosDiamante::class,
-        'permisos.platino' => \App\Http\Middleware\PermisosPlatino::class,
-        'permisos.oro' => \App\Http\Middleware\PermisosOro::class,
-        'permisos.plata' => \App\Http\Middleware\PermisosPlata::class,
-        'permisos.cobre' => \App\Http\Middleware\PermisosCobre::class,
+        'permisos.admin' => \App\Http\Middleware\Permisos\PermisosAdmin::class,
+        'permisos.diamante' => \App\Http\Middleware\Permisos\PermisosDiamante::class,
+        'permisos.platino' => \App\Http\Middleware\Permisos\PermisosPlatino::class,
+        'permisos.oro' => \App\Http\Middleware\Permisos\PermisosOro::class,
+        'permisos.plata' => \App\Http\Middleware\Permisos\PermisosPlata::class,
+        'permisos.bronce' => \App\Http\Middleware\Permisos\PermisosBronce::class,
     ];
 }

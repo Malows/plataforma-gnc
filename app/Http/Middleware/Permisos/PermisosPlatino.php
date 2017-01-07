@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Permisos;
 
 use Closure;
 
@@ -15,7 +15,7 @@ class PermisosPlatino
      */
     public function handle($request, Closure $next)
     {
-        if ( $request->user()->tipo_usuario <= 3 ) {
+        if ( $request->user()->id_tipo_usuario > 3 ) {
             abort(403); //not allowed (falta de permisos)
         }
         return $next($request);
