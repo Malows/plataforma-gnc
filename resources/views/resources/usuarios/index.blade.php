@@ -8,8 +8,12 @@
 @section('main-content')
     <div class="container-fluid spark-screen">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                {{--<div class="col-md-12">--}}
+            <a href="{{ route('usuarios.create') }}" class="btn btn-primary pull-right">Crear un usuario nuevo</a>
+        </div>
+        <hr>
+        <div class="row">
+            {{--<div class="col-md-10 col-md-offset-1">--}}
+            <div class="col-md-12">
                 <table class="table table-hover">
                     <thead>
                         <th>#</th>
@@ -24,15 +28,20 @@
                     <tbody>
                     @foreach($usuarios as $usuario)
                         <tr>
-                            {{--{{dd($usuario->tipo_de_usuario)}}--}}
                             <td>{{ $usuario->id }}</td>
                             <td>{{ $usuario->name }}</td>
                             <td>{{ $usuario->email }}</td>
-                            <td>{{ $usuario->id_tipo_usuario->nombre }}</td>
-                            <td>{{ $usuario->fecha_de_licencia }}</td>
-                            <td>{{ $usuario->duracion_de_licencia }}</td>
-                            <td>{{ $usuario->habilitado }}</td>
-                            <td>opciones</td>
+                            <td>{{ $usuario->tipo_usuario->nombre }}</td>
+                            <td>{{ $usuario->inicio->format('d/m/Y') }}</td>
+                            <td>{{ $usuario->fin->format('d/m/Y').' - '. $usuario->diferencia}}</td>
+                            <td><i class="fa fa-@if ($usuario->habilitado ){{"check"}}@else{{"times"}}@endif"></i></td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                    <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ route('usuarios.delete', $usuario->id  ) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

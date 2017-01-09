@@ -31,9 +31,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::group(['middleware' => 'permisos.admin'], function (){
             Route::resource('/provincias',          'ProvinciaController');
+
             Route::resource('/localidades',         'LocalidadController');
+
             Route::resource('/tipo_de_usuarios',    'TipoUsuarioController');
+
             Route::resource('/usuarios',            'UserController');
+            Route::get('/usuarios/{usuario}/delete', ['uses'=>'UserController@delete', 'as'=>'usuarios.delete']);
         });
 
         Route::group(['middleware' => 'permisos.bronce'],function (){

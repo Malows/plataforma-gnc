@@ -15,7 +15,7 @@ class PermisosOro
      */
     public function handle($request, Closure $next)
     {
-        if ( $request->user()->id_tipo_usuario > 4 ) {
+        if ( $request->user()->tipo_usuario_id > 4 ) {
             abort(403); //not allowed (falta de permisos)
         }
         return $next($request);

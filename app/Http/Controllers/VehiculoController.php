@@ -16,7 +16,7 @@ class VehiculoController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $vehiculos = ( $user->id_tipo_usuario == 1 ) ?
+        $vehiculos = ( $user->tipo_usuario_id == 1 ) ?
           Vehiculo::all() : Vehiculo::where('id_usuario', $user->id_usuario);
         $vehiculos->sortBy('update_at')->paginate(20);
         $vehiculos->each(function($vehiculo){

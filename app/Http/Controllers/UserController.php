@@ -2,21 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\TipoUsuario;
 use App\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
+    function __construct()
+    {
+        Carbon::setLocale('es');
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function index()
     {
         $users = User::paginate(20);
         $users->each(function ($users){
-            $users->tipo_de_usuario;
+            $users->tipo_usuario;
+            $users->inicio = Carbon::parse($users->fecha_de_licencia);
+            $users->fin = ($users->tipo_usuario_id === 1) ?
+                Carbon::maxValue() :
+                Carbon::parse($users->fecha_de_licencia)->addDays($users->duracion_de_licencia);
+            $users->diferencia = Carbon::now()->diffForHumans($users->fin);
         });
         return view('resources.usuarios.index')->with('usuarios',$users);
     }
@@ -24,11 +36,12 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function create()
     {
-        return view('');
+        $tipos = TipoUsuario::pluck('nombre', 'id');
+        return view('resources.usuarios.create')->with('tipos_de_usuarios', $tipos);
     }
 
     /**
@@ -48,38 +61,38 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\View\View View
      */
-    public function show(User $user)
+    public function show(int $id)
     {
-        $usuario = User::find( $user );
-        return view('')->with('usuario',$usuario);
+        $usuario = User::find( $id );
+        return view('resources.usuarios.show')->with('usuario',$usuario);
 
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\View\View View
      */
-    public function edit(User $user)
+    public function edit(int $id)
     {
-        $usuario = User::find( $user );
-        return view('')->with('usuario',$usuario);
+        $usuario = User::find( $id );
+        return view('resources.usuarios.edit')->with('usuario',$usuario);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, int $id)
     {
-        $usuario = User::find( $user );
+        $usuario = User::find( $id );
         $usuario->fill( $request->all() );
         return redirect()->route('user.index');
     }
@@ -90,10 +103,27 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
-        $usuario = User::find( $user );
+        $usuario = User::find( $id );
         $usuario->delete();
         return redirect()->route('user.index');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View View
+     */
+    public function delete(int $id)
+    {
+        $usuario = User::find( $id );
+        $usuario->tipo_usuario;
+        $usuario->titulares;
+        $usuario->marcas_de_autos_registradas;
+        $usuario->modelos_de_autos_registrados;
+
+        return view('resources.usuarios.delete')->with('usuario', $usuario);
     }
 }

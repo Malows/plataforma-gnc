@@ -17,14 +17,14 @@ class CreateModelosAutosTable extends Migration
             $table->increments('id');
             $table->string('nombre');
 
-            $table->unsignedInteger('id_marca');
-            $table->foreign('id_marca')
+            $table->unsignedInteger('marca_id');
+            $table->foreign('marca_id')
               ->references('id')->on('marcas_autos')
               ->onDelete('restrict')->onUpdate('cascade');
 
-            $table->unsignedInteger('id_usuario')->default(1)
+            $table->unsignedInteger('usuario_id')->default(1)
             ->comment("Quien registró el modelo de autos, si fletamos usuario, nos quedamos con sus datos");
-            $table->foreign('id_usuario')
+            $table->foreign('usuario_id')
             ->references('id')->on('users')
             ->onUpdate('cascade');
 

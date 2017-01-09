@@ -17,12 +17,14 @@ class CreatedLocalidadTable extends Migration
           $table->increments('id');
           $table->string('nombre');
           $table->integer('codigo_postal');
-          $table->integer('id_provincia')->unsigned();
-          $table->timestamps();
-
-          $table->foreign('id_provincia')
+          
+          $table->unsignedInteger('provincia_id');
+          $table->foreign('provincia_id')
             ->references('id')->on('provincias')
             ->onDelete('restrict')->onUpdate('cascade');
+
+          $table->timestamps();
+
         });
     }
 

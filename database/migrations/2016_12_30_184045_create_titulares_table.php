@@ -20,8 +20,8 @@ class CreateTitularesTable extends Migration
             $table->unsignedInteger('dni')->unique();
             $table->string('domicilio');
 
-            $table->integer('id_localidad')->unsigned();
-            $table->foreign('id_localidad')
+            $table->unsignedInteger('localidad_id');
+            $table->foreign('localidad_id')
               ->references('id')->on('localidades')
               ->onDelete('restrict')->onUpdate('cascade');
 
@@ -29,9 +29,9 @@ class CreateTitularesTable extends Migration
             $table->string('email')->nullable();
             $table->string('contacto')->nullable();
 
-            $table->unsignedInteger('id_usuario')->default(1)
+            $table->unsignedInteger('usuario_id')->default(1)
               ->comment("Referencia al usuario que creó el titular del vehiculo. AKA: los clientes no se comparten");
-            $table->foreign('id_usuario')
+            $table->foreign('usuario_id')
               ->references('id')->on('users')
               ->onDelete('cascade')->onUpdate('cascade');
 

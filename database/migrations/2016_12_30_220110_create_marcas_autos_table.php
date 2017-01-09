@@ -17,9 +17,9 @@ class CreateMarcasAutosTable extends Migration
             $table->increments('id');
             $table->string('nombre');
 
-            $table->unsignedInteger('id_usuario')->default(1)
+            $table->unsignedInteger('usuario_id')->default(1)
             ->comment("Quien agregó la marca de autos. Si fletamos usuarios, nos quedamos con sus datos, bien gracias");
-            $table->foreign('id_usuario')
+            $table->foreign('usuario_id')
             ->references('id')->on('users')
             ->onUpdate('cascade');
 

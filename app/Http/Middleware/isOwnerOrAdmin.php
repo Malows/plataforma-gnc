@@ -24,7 +24,7 @@ class isOwnerOrAdmin
     {
         $usuario_autorizado = DB::table($recurso)->find( $request->id )->id_usuario;
         $es_owner = $request->user()->id == $usuario_autorizado;
-        $es_admin = $request->user()->id_tipo_usuario == 1;
+        $es_admin = $request->user()->tipo_usuario_id == 1;
         if ( ! $es_owner or ! $es_admin ){
             abort(401); //unauthorized
         }

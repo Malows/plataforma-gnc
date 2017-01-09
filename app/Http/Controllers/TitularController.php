@@ -16,7 +16,7 @@ class TitularController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $titulares = ( $user->id_tipo_usuario === 1 ) ?
+        $titulares = ( $user->tipo_usuario_id === 1 ) ?
           Titular::all() : Titular::where('id_usuario', $user->id) ;
         $titulares->sortBy('apellido')->sortBy('nombre')->paginate(20);
         return view('')->with('titulares',$titulares);
@@ -69,7 +69,7 @@ class TitularController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
-        $vehiculos = ( $user->id_tipo_usuario === 1 ) ?
+        $vehiculos = ( $user->tipo_usuario_id === 1 ) ?
           Vehiculo::all() : Vehiculo::where('id_usuario', $user->id) ;
 
         $titular = Titular::find($id);

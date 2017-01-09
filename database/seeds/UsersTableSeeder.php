@@ -17,17 +17,17 @@ class UsersTableSeeder extends Seeder
           'email' => 'cruz.jm.stafe@gmail.com',
           'password' => bcrypt('pertennesco'),
           'duracion_de_licencia' => 0,
-          'id_tipo_usuario' => 1
+          'tipo_usuario_id' => 1
         ],[
           'name' => 'Admin',
           'email' => 'admin@gmail.com',
           'password' => bcrypt('admin'),
           'duracion_de_licencia' => 0,
-          'id_tipo_usuario' => 1
+          'tipo_usuario_id' => 1
         ]
       );
       $usuarios = array_map(function ($ar){
-        $ar['duracion_de_licencia'] = $ar['id_tipo_usuario'] == 1 ? PHP_INT_MAX : 30;
+        $ar['duracion_de_licencia'] = $ar['tipo_usuario_id'] == 1 ? PHP_INT_MAX : 30;
         return $ar;
       }, $usuarios);
 

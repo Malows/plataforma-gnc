@@ -14,8 +14,8 @@ class AlteUsersTableAddTipoUsuario extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-          $table->unsignedInteger('id_tipo_usuario')->default(6)->after('password');
-          $table->foreign('id_tipo_usuario')
+          $table->unsignedInteger('tipo_usuario_id')->default(6)->after('password');
+          $table->foreign('tipo_usuario_id')
             ->references('id')->on('tipos_usuarios')
             ->onDelete('cascade')->onUpdate('cascade');
 
