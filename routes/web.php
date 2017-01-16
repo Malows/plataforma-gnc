@@ -25,9 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix'=> 'dashboard'], function (){ //example.com/dashboard/
 
-        Route::get('/', function (){
-            return view('home');
-        })->name('dashboard');
+        Route::get('/', function (){ return view('home'); })->name('dashboard');
 
         Route::group(['middleware' => 'permisos.admin'], function (){
             Route::resource('/provincias',          'ProvinciaController');
@@ -37,6 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/tipo_de_usuarios',    'TipoUsuarioController');
 
             Route::resource('/usuarios',            'UserController');
+
+            Route::get('/tipo_de_usuarios/{tipo_de_usuario}/delete', ['uses'=>'TipoUsuarioController@delete', 'as'=>'tipo_de_usuarios.delete']);
             Route::get('/usuarios/{usuario}/delete', ['uses'=>'UserController@delete', 'as'=>'usuarios.delete']);
         });
 

@@ -4,13 +4,20 @@
     {{ trans('message.usuarios').' - Crear' }}
 @endsection
 
+@section('contentheader_title', trans('message.create') .' '. strtolower(trans('message.usuarios')) )
+
+@section('leveler')
+    <li><a href="{{  route('usuarios.index') }}"><i class="fa fa-dashboard"></i> {{ trans('message.usuarios') }}</a></li>
+    <li class="active">{{ trans('message.create') }}</li>
+@endsection
 
 @section('main-content')
     <div class="container-fluid spark-screen">
         <div class="row">
             {{--<div class="col-md-10 col-md-offset-1">--}}
             <div class="col-md-8 col-md-offset-2">
-                {!! Form::open(['route' => ['usuarios.store'], 'method' => 'POST']) !!}
+                @include('layouts.partials.errors')
+                {!! Form::open(['route' => 'usuarios.store', 'method' => 'POST']) !!}
                 <div class="form-group">
                     {!! Form::label('name','Nombre') !!}
                     {!! Form::text('name', null, ['class' =>'form-control', 'required']) !!}
@@ -22,11 +29,11 @@
                 <hr>
                 <div class="form-group">
                     {!! Form::label('password','Contraseña') !!}
-                    {!! Form::text('password', null, ['class' =>'form-control', 'required']) !!}
+                    {!! Form::password('password', ['class' =>'form-control', 'required']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('repassword','Confirmar contraseña') !!}
-                    {!! Form::text('repassword', null, ['class' =>'form-control', 'required']) !!}
+                    {!! Form::label('password_confirmation','Confirmar contraseña') !!}
+                    {!! Form::password('password_confirmation', ['class' =>'form-control', 'required']) !!}
                 </div>
                 <hr>
                 <div class="row">
@@ -38,24 +45,16 @@
                         {!! Form::label('duracion_de_licencia','Duración de licencia') !!}
                         <br>
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-primary">
-                                <input type="radio" name="duracion_de_licencia" id="duarcion1" autocomplete="off">1 Mes
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="duracion_de_licencia" id="duracion2" autocomplete="off">1 Año
-                            </label>
+                            <label class="btn btn-primary">{!! Form::radio('duracion_de_licencia', '30') !!}Un Mes</label>
+                            <label class="btn btn-primary">{!! Form::radio('duracion_de_licencia', '365') !!}Un Año</label>
                         </div>
                     </div>
                     <div class="form-group col-md-4">
                         {!! Form::label('habilitado','Habilitado') !!}
                         <br>
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-primary">
-                                <input type="radio" name="habilitado" id="habilitado1" value="si">Sí
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="habilitado" id="habilitado2" value="no">No
-                            </label>
+                            <label class="btn btn-primary">{!! Form::radio('habilitado', '1') !!}Sí</label>
+                            <label class="btn btn-primary">{!! Form::radio('habilitado', '0') !!}No</label>
                         </div>
                     </div>
                 </div>

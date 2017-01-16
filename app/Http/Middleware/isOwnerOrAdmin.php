@@ -18,6 +18,7 @@ class isOwnerOrAdmin
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param  mixed $recurso
      * @return mixed
      */
     public function handle($request, Closure $next, $recurso)

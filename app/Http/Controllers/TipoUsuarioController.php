@@ -10,22 +10,22 @@ class TipoUsuarioController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function index()
     {
-        $tipos = TipoUsuario::sortBy('id');
-        return view('')->with('tipos_usuarios',$tipos);
+        $tipos = TipoUsuario::orderBy('id','ASC')->get();
+        return view('resources.tipos_usuarios.index')->with('tipos_usuarios',$tipos);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function create()
     {
-        return view('');
+        return view('resources.tipos_usuarios.create');
     }
 
     /**
@@ -38,7 +38,8 @@ class TipoUsuarioController extends Controller
     {
         $tipo = new TipoUsuario( $request->all() );
         $tipo->save();
-        return redirect()->route('');
+        flash('Tipo de usuario creado correctamente','success');
+        return redirect()->route('tipo_de_usuarios.index');
     }
 
     /**
@@ -50,19 +51,20 @@ class TipoUsuarioController extends Controller
     public function show($id)
     {
         $tipo = TipoUsuario::find($id);
-        return view('')->with('tipo_usuario',$tipo);
+        flash('No hay más información del tipo "'.$tipo->nombre.'" que la que se ve en el índice', 'info');
+        return redirect()->route('tipo_de_usuarios.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function edit($id)
     {
         $tipo = TipoUsuario::find($id);
-        return view('')->with('tipo_usuario',$tipo);
+        return view('resources.tipos_usuarios.edit')->with('tipo_usuario',$tipo);
     }
 
     /**
@@ -76,7 +78,20 @@ class TipoUsuarioController extends Controller
     {
         $tipo = TipoUsuario::find($id);
         $tipo->fill( $request-all() );
-        return redirect()->route('');
+        flash('Tipo de usuario editado correctamente','success');
+        return redirect()->route('tipo_de_usuarios.index');
+    }
+
+    /**
+     * Show a confirmation for deleting the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View View
+     */
+    public function delete(int $id)
+    {
+        $tipo = TipoUsuario::find( $id );
+        return view('resources.tipos_usuarios.delete')->with('tipo_usuario', $tipo);
     }
 
     /**
@@ -88,7 +103,7 @@ class TipoUsuarioController extends Controller
     public function destroy($id)
     {
         $tipo = TipoUsuario::find($id);
-        $tipo->delete();
-        return redirect()->route('');
+        flash('No se puede eliminar '. $tipo->nombre.' desde la plataforma web. Probá conectandote al servidor de base de datos','info');
+        return redirect()->route('tipo_de_usuarios.index');
     }
 }

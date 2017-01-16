@@ -29,9 +29,9 @@ class CreateTitularesTable extends Migration
             $table->string('email')->nullable();
             $table->string('contacto')->nullable();
 
-            $table->unsignedInteger('usuario_id')->default(1)
+            $table->unsignedInteger('user_id')->default(1)
               ->comment("Referencia al usuario que creó el titular del vehiculo. AKA: los clientes no se comparten");
-            $table->foreign('usuario_id')
+            $table->foreign('user_id')
               ->references('id')->on('users')
               ->onDelete('cascade')->onUpdate('cascade');
 

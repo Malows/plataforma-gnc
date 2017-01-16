@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\TipoUsuario;
 use App\User;
+use App\Http\Requests;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class UserController extends Controller
 {
@@ -38,7 +43,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View View
      */
-    public function create()
+    public function create() : View
     {
         $tipos = TipoUsuario::pluck('nombre', 'id');
         return view('resources.usuarios.create')->with('tipos_de_usuarios', $tipos);
@@ -47,15 +52,18 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $user = new User( $request->all() );
-
+        $user->password = bcrypt( $user->password );
+        $user->habilitado = intval( $user->habilidato );
+        $user->duracion_de_licencia = intval( $user->duracion_de_licencia );
         $user->save();
-        return redirect()->route('user.index');
+        flash('Usuario '. $user->name .' registrado correctamente','success');
+        return redirect()->route('usuarios.index');
     }
 
     /**
@@ -67,6 +75,25 @@ class UserController extends Controller
     public function show(int $id)
     {
         $usuario = User::find( $id );
+        $usuario->tipo_usuario;
+        if ( $usuario->tipo_usuario_id != 1) {
+            $usuario->titulares;
+            $usuario->titulares->each(function ($titulares){
+                $titulares->vehiculos;
+            });
+
+            $usuario->marcas_de_autos_registradas;
+
+            $usuario->modelos_de_autos_registrados;
+            $usuario->modelos_de_autos_registrados->each(function ($modelo){
+                $modelo->marca;
+            });
+        }
+        $usuario->inicio = Carbon::parse($usuario->fecha_de_licencia);
+        $usuario->fin = ($usuario->tipo_usuario_id === 1) ?
+            Carbon::maxValue() :
+            Carbon::parse($usuario->fecha_de_licencia)->addDays($usuario->duracion_de_licencia);
+        $usuario->diferencia = Carbon::now()->diffForHumans($usuario->fin);
         return view('resources.usuarios.show')->with('usuario',$usuario);
 
     }
@@ -80,38 +107,66 @@ class UserController extends Controller
     public function edit(int $id)
     {
         $usuario = User::find( $id );
-        return view('resources.usuarios.edit')->with('usuario',$usuario);
+        $usuario->tipo_usuario;
+        $tipos = TipoUsuario::pluck('nombre', 'id');
+        return view('resources.usuarios.edit')->with('usuario',$usuario)->with('tipos_de_usuarios', $tipos);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(UserRequest $request, int $id)
     {
         $usuario = User::find( $id );
         $usuario->fill( $request->all() );
-        return redirect()->route('user.index');
+
+//        $usuario->fecha_de_licencia = Carbon::now();
+
+        $usuario->save();
+        return redirect()->route('usuarios.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
     {
-        $usuario = User::find( $id );
-        $usuario->delete();
-        return redirect()->route('user.index');
+        $expropiado = User::find( $id );
+
+        $func = function ($elem) {
+            $elem->user_id = Auth::user()->id;
+            $elem->save();
+        };
+
+        $expropiado->titulares->each($func);
+        $expropiado->vehiculos->each($func);
+        $expropiado->marcas_de_autos_registradas->each($func);
+        $expropiado->modelos_de_autos_registrados->each($func);
+
+        $usuario = User::find($expropiado->id);
+        $a = $usuario->titulares->count();
+        $b = $usuario->vehiculos->count();
+        $c = $usuario->marcas_de_autos_registradas->count();
+        $d = $usuario->modelos_de_autos_registrados->count();
+
+        if( $a == 0 and $b == 0 and $c == 0 and $d == 0 ) {
+            $usuario->delete();
+            flash('Usuario ' . $usuario->name . ' correctamente eliminado' ,'info');
+        } else {
+            flash('Algo inesperado ocurrió intentando eliminar al usuario ' . $usuario->name,'danger');
+        }
+        return redirect()->route('usuarios.index');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show a confirmation for deleting the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\View\View View

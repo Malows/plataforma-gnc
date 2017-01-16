@@ -32,8 +32,8 @@ class CreatedVehiculosTable extends Migration
               ->references('id')->on('modelos_autos')
               ->onUpdate('cascade');
 
-            $table->unsignedInteger('usuario_id')->default(1);
-            $table->foreign('usuario_id')
+            $table->unsignedInteger('user_id')->default(1);
+            $table->foreign('user_id')
               ->references('id')->on('users')
               ->onUpdate('cascade');
 

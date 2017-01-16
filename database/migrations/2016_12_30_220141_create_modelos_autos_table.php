@@ -22,9 +22,9 @@ class CreateModelosAutosTable extends Migration
               ->references('id')->on('marcas_autos')
               ->onDelete('restrict')->onUpdate('cascade');
 
-            $table->unsignedInteger('usuario_id')->default(1)
+            $table->unsignedInteger('user_id')->default(1)
             ->comment("Quien registró el modelo de autos, si fletamos usuario, nos quedamos con sus datos");
-            $table->foreign('usuario_id')
+            $table->foreign('user_id')
             ->references('id')->on('users')
             ->onUpdate('cascade');
 

@@ -2,7 +2,7 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ url('/home') }}" class="logo">
+    <a href="{{ route('dashboard') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">{{ trans('message.platform_nickname') }}</span>
         <!-- logo for regular state and mobile devices -->
@@ -109,8 +109,7 @@
                     </ul>
                 </li>
                 @if (Auth::guest())
-                    <li><a href="{{ url('/register') }}">{{ trans('message.register') }}</a></li>
-                    <li><a href="{{ url('/login') }}">{{ trans('message.login') }}</a></li>
+                    <li><a href="{{ route('login') }}">{{ trans('message.login') }}</a></li>
                 @else
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
