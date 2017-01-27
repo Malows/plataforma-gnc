@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::resource('/usuarios',            'UserController');
 
+            Route::get('/localidades/{localidad}/delete', ['uses'=>'LocalidadController@delete','as'=>'localidades.delete']);
             Route::get('/tipo_de_usuarios/{tipo_de_usuario}/delete', ['uses'=>'TipoUsuarioController@delete', 'as'=>'tipo_de_usuarios.delete']);
             Route::get('/usuarios/{usuario}/delete', ['uses'=>'UserController@delete', 'as'=>'usuarios.delete']);
         });
@@ -45,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/titulares',           'TitularController');
             Route::resource('/marcas_de_autos',     'MarcaAutosController');
             Route::resource('/modelos_de_autos',    'ModeloAutosController');
+
+            Route::get('/modelos_de_autos/{modelos_de_auto}/delete', ['uses' => 'ModeloAutosController@delete', 'as'=>'modelos_de_autos.delete']);
         });
 
     });

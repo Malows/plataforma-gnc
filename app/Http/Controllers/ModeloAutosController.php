@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\MarcaAutos;
 use App\ModeloAutos;
@@ -11,34 +12,33 @@ class ModeloAutosController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
 
     public function index()
     {
-        // TODO: scope para filtrar
-        $user = Auth::user();
-        $modelos_de_usuario = ModeloAutos::where('id_usuario', $user->id)
-          ->sortBy('nombre');
-        $modelos_de_otros = ModeloAutos::where('id_usuario', '!=', $user->id)
-          ->sortBy('nombre');
-        $modelos = $modelos_de_usuario->union($modelos_de_otros);
-        $modelos->paginate(30);
-        $modelos->each(function($modelos){
+        $modelos_propios = ModeloAutos::where('user_id', Auth::user()->id)->orderBy('nombre','ASC')->get();
+        $modelos_ajenos = ModeloAutos::where('user_id', '!=', Auth::user()->id)->orderBy('nombre', 'ASC')->get();
+        $modelos_propios->each(function($modelos){
           $modelos->marca;
         });
-        return view('')->with('modelos', $modelos);
+        $modelos_ajenos->each(function($modelos){
+            $modelos->marca;
+        });
+        return view('resources.modelos_autos.index')
+            ->with('modelos_propios', $modelos_propios)
+            ->with('modelos_ajenos', $modelos_ajenos);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function create()
     {
         $marcas = MarcaAutos::all();
-        return view('')->with('marcas', $marcas);
+        return view('resource.modelos_autos.create')->with('marcas', $marcas);
     }
 
     /**
@@ -52,6 +52,7 @@ class ModeloAutosController extends Controller
         $modelo = new ModeloAutos( $request->all() );
         $modelo->id_usuario = Auth::user()->id;
         $modelo->save();
+        flash('Modelo de autos correctamente creado','success');
         return redirect()->route('modelos_de_autos.index');
     }
 
@@ -59,27 +60,25 @@ class ModeloAutosController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function show($id)
     {
         $modelo = ModeloAutos::find($id);
-        return view('')->with('modelo',$modelo);
+        return view('resources.modelos_autos.show')->with('modelo',$modelo);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function edit($id)
     {
-        $marcas = MarcaAutos::all();
+        $marcas = MarcaAutos::pluck('nombre', 'id');
         $modelo = ModeloAutos::find($id);
-        return view('')
-          ->with('marcas',$marcas)
-          ->with('modelo',$modelo);
+        return view('resources.modelos_autos.edit')->with('marcas',$marcas)->with('modelo',$modelo);
     }
 
     /**
@@ -93,9 +92,9 @@ class ModeloAutosController extends Controller
     {
         $modelo = ModeloAutos::find($id);
         $modelo->fill( $request->all() );
-        $modelo->id_usuario = ( $modelo->id_usuario ) ?
-          $modelo->id_usuario : Auth::user()->id;
+        $modelo->user_id = ( $modelo->user_id ) ? $modelo->user_id : Auth::user()->id;
         $modelo->save();
+        flash('Modelo de autos correctamente editado','success');
         return redirect()->route('modelos_de_autos.index');
     }
 
@@ -107,8 +106,25 @@ class ModeloAutosController extends Controller
      */
     public function destroy($id)
     {
-      $modelo = ModeloAutos::find($id);
-      $modelo->delete();
-      return redirect()->route('modelos_de_autos.index');
+        $modelo = ModeloAutos::find($id);
+        $modelo->user_id = 1;
+        $modelo->save();
+        flash('Modelo de autos correctamente eliminado','success');
+        return redirect()->route('modelos_de_autos.index');
     }
+
+    /**
+    * Remove the specified resource from storage.
+    *
+    * @param  int  $id
+    * @return \Illuminate\View\View View
+    */
+    public function delete($id)
+    {
+        $modelo = ModeloAutos::find($id);
+        $modelo->marca;
+        return view('resources.modelos_autos.delete')->with('modelo',$modelo);
+    }
+
+
 }

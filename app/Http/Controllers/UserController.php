@@ -9,7 +9,6 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
 class UserController extends Controller
@@ -43,7 +42,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View View
      */
-    public function create() : View
+    public function create()
     {
         $tipos = TipoUsuario::pluck('nombre', 'id');
         return view('resources.usuarios.create')->with('tipos_de_usuarios', $tipos);

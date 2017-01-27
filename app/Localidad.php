@@ -22,4 +22,9 @@ class Localidad extends Model
       return $this->hasMany('App\Titular');
     }
 
+    public function scopeSearch($query, $provincia)
+    {
+        return $query->where('provincia_id', '=', $provincia);
+    }
+
 }
