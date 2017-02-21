@@ -7,6 +7,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Ticket;
+use Auth;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 

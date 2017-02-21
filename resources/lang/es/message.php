@@ -167,6 +167,16 @@ return [
     'to'                      => 'a',
     'templatewith'            => 'plantilla con',
     'and'                     => 'y',
+    'viewall'                 => 'Ver todos',
+    'need_some_help'          => '¿Necesitas ayuda?',
+    'ask_for_help'            => 'Pedir ayuda',
+    'write_a_ticket_for_help' => 'Escribe un ticket pidiendo ayuda',
+    'we_will_awnser_soon'     => 'Responderemos pronto',
+    'knowledge_base'          => 'Base de conocimientos',
+    'Knowledge_base_description' => 'Aquí podras encontrar información de como usar la plataforma',
+    'license'                 => 'Licencia',
+    'days_left_of_license'    => 'Días restantes de licencia',
+    'n_messages_to_read'      => '{0} No tienes mensajes nuevos|{1} Tiene :count mensaje nuevo|[2,*] Tiene :count mensajes nuevos',
 
 
     /*
@@ -188,6 +198,8 @@ return [
     'tipo_de_usuarios'      => 'Tipos de usuarios',
     'vehiculos'             => 'Vehículos',
     'titulares'             => 'Titulares',
+    'tickets'               => 'Tickets',
+    'mensajes'              => 'Mensajes',
 
 
     'email'                   => 'Correo Electrónico',

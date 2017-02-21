@@ -9,39 +9,50 @@
     <div class="tab-content">
         <!-- Home tab content -->
         <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">{{ trans('adminlte_lang::message.recentactivity') }}</h3>
+            <h3 class="control-sidebar-heading">{{ trans('message.need_some_help') }}</h3>
             <ul class='control-sidebar-menu'>
                 <li>
-                    <a href='#'>
-                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                    <a href='{{ route('base_de_conocimientos') }}'>
+                        <i class="menu-icon fa fa-university bg-red"></i>
                         <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">{{ trans('adminlte_lang::message.birthday') }}</h4>
-                            <p>{{ trans('adminlte_lang::message.birthdaydate') }}</p>
+                            <h4 class="control-sidebar-subheading">{{ trans('message.knowledge_base') }}</h4>
+                            <p>{{ trans('message.Knowledge_base_description') }}</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href='{{ route('tickets.index') }}'>
+                        <i class="menu-icon fa fa-question bg-red"></i>
+                        <div class="menu-info">
+                            <h4 class="control-sidebar-subheading">{{ trans('message.write_a_ticket_for_help') }}</h4>
+                            <p>{{ trans('message.we_will_awnser_soon') }}</p>
                         </div>
                     </a>
                 </li>
             </ul><!-- /.control-sidebar-menu -->
-
-            <h3 class="control-sidebar-heading">{{ trans('adminlte_lang::message.progress') }}</h3>
+            @if( ! Auth::user()->es_admin() )
+            <h3 class="control-sidebar-heading">{{ trans('message.license') }}</h3>
             <ul class='control-sidebar-menu'>
                 <li>
                     <a href='#'>
                         <h4 class="control-sidebar-subheading">
-                            {{ trans('adminlte_lang::message.customtemplate') }}
-                            <span class="label label-danger pull-right">70%</span>
+                            {{ trans('message.days_left_of_license') }}
+                            <span class="label label-danger pull-right">{{ Auth::user()->dias_restantes_de_licencia() }}</span>
                         </h4>
                         <div class="progress progress-xxs">
-                            <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                            <div class="progress-bar progress-bar-danger" style="width: {{ 100 * ( Auth::user()->dias_restantes_de_licencia() / Auth::user()->duracion_de_licencia ) }}%"></div>
                         </div>
                     </a>
                 </li>
             </ul><!-- /.control-sidebar-menu -->
+            @endif
 
         </div><!-- /.tab-pane -->
         <!-- Stats tab content -->
         <div class="tab-pane" id="control-sidebar-stats-tab">{{ trans('adminlte_lang::message.statstab') }}</div><!-- /.tab-pane -->
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
+
             <form method="post">
                 <h3 class="control-sidebar-heading">{{ trans('adminlte_lang::message.generalset') }}</h3>
                 <div class="form-group">

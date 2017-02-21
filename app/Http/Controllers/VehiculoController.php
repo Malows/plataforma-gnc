@@ -16,7 +16,7 @@ class VehiculoController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $vehiculos = ( $user->tipo_usuario_id == 1 ) ?
+        $vehiculos = ( $user->es_admin() ) ?
           Vehiculo::all() : Vehiculo::where('id_usuario', $user->id_usuario);
         $vehiculos->sortBy('update_at')->paginate(20);
         $vehiculos->each(function($vehiculo){
@@ -109,6 +109,35 @@ class VehiculoController extends Controller
     {
         $vehiculo = Vehiculo::find($id);
         $vehiculo->delete();
+        flash('Vehículo eliminado correctamente. Para restaurar el vehículo eliminar, consulte un administrador','info');
+        return redirect()->route('vehiculos.index');
+    }
+
+    /**
+     * Erase the specified softDeleted resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function erase( int $id )
+    {
+        $vehiculo = Vehiculo::find( $id );
+        $vehiculo->forceDelete();
+        flash('Vehiculo borrado permanentemente','warning');
+        return redirect()->route('vehiculos.index');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore( int $id )
+    {
+        $vehiculo = Vehiculo::find( $id );
+        $vehiculo->restore();
+        flash('Vehiculo restaurado correctamente','success');
         return redirect()->route('vehiculos.index');
     }
 }

@@ -19,6 +19,7 @@ elixir(function(mix) {
         .less('./node_modules/admin-lte/build/less/AdminLTE.less', './public/css/adminlte-less.css')
         .less('adminlte-app.less')
         .less('./node_modules/toastr/toastr.less')
+        .sass('stylo.scss')
         .styles([
             './public/css/app.css',
             './node_modules/admin-lte/dist/css/skins/_all-skins.css',
@@ -26,7 +27,9 @@ elixir(function(mix) {
             './public/css/adminlte-app.css',
             './node_modules/icheck/skins/square/blue.css',
             './public/css/toastr.css',
+            './public/css/stylo.css',
         ])
+
         .copy('node_modules/font-awesome/fonts/*.*','public/fonts/')
         .copy('node_modules/ionicons/dist/fonts/*.*','public/fonts/')
         .copy('node_modules/admin-lte/bootstrap/fonts/*.*','public/fonts/bootstrap')
@@ -35,5 +38,6 @@ elixir(function(mix) {
         .copy('node_modules/admin-lte/plugins','public/plugins')
         .copy('node_modules/icheck/skins/square/blue.png','public/css')
         .copy('node_modules/icheck/skins/square/blue@2x.png','public/css')
+        .copy('node_modules/trumbowyg/dist/**', 'public/plugins/trumbowyg')
         .webpack('app.js');
 });

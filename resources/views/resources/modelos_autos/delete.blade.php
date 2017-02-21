@@ -5,7 +5,7 @@
 @section('contentheader_description', 'Eliminar un fabricante de autos')
 
 @section('leveler')
-    <li><a href="{{ route('modelos_de_autos.index') }}"><i class="fa fa-dashboard"></i> {{ trans('message.modelos_de_autos') }}</a></li>
+    <li><a href="{{ route('modelos_de_autos.index', $marca) }}"><i class="fa fa-dashboard"></i> {{ trans('message.modelos_de_autos') }}</a></li>
     <li class="active">{{ trans('message.delete') }}</li>
 @endsection
 
@@ -20,7 +20,7 @@
                     <hr>
                     <p>La existencia de este registro será evaluada por los administradores</p>
                     <hr>
-                    {!! Form::open(['route' => ['modelos_de_autos.destroy', $modelo], 'method' => 'DELETE']) !!}
+                    {!! Form::open(['route' => ['modelos_de_autos.destroy', $marca, $modelo], 'method' => 'DELETE']) !!}
                     {!! Form::submit('Comprendido', [ 'class'=>'btn btn-danger', 'role'=>'button' ]) !!}
                     {!! Form::close() !!}
                 </div>

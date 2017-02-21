@@ -21,7 +21,7 @@
                     <li>Correo: {{ $usuario->email }}</li>
                     <li>Tipo de usuario: {{ $usuario->tipo_usuario->nombre }}</li>
                     @if($usuario->created_at)<li>Registrado el día: {{ $usuario->created_at->format('d/m/Y') }}</li>@endif
-                    @if($usuario->tipo_usuario_id != 1)
+                    @if( ! $usuario->es_admin() )
                         <li>Inicio de licencia: {{ $usuario->inicio->format('d/m/Y') }}</li>
                         <li>Duración de licencia: {{ $usuario->duracion_de_licencia}}</li>
                         <li>Fin de licenacia: {{ $usuario->fin->format('d/m/Y') }}</li>

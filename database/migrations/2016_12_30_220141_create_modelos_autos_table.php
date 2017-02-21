@@ -17,8 +17,8 @@ class CreateModelosAutosTable extends Migration
             $table->increments('id');
             $table->string('nombre');
 
-            $table->unsignedInteger('marca_id');
-            $table->foreign('marca_id')
+            $table->unsignedInteger('marca_autos_id');
+            $table->foreign('marca_autos_id')
               ->references('id')->on('marcas_autos')
               ->onDelete('restrict')->onUpdate('cascade');
 

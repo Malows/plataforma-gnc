@@ -58,7 +58,7 @@ class UserRequest extends FormRequest
         $id = $this->input('id');
         $email = $this->input('email');
 
-        if( Auth::user()->tipo_usuario_id === 1 or
+        if( Auth::user()->es_admin() or
             User::where(compact('id', 'email'))->exists() ){
             return "unique:users,email,$id";
         }

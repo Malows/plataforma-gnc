@@ -5,7 +5,9 @@
 @section('contentheader_description', 'Edita modelos de autos de un fabricante registrado')
 
 @section('leveler')
-    <li><a href="{{  route('modelos_de_autos.index') }}"><i class="fa fa-dashboard"></i> {{ trans('message.modelos_de_autos') }}</a></li>
+    <li><a href="{{ route('marcas_de_autos.index') }}"><i class="fa fa-dashboard"></i> {{ trans('message.marcas_de_autos') }}</a></li>
+    <li><a href="{{ route('modelos_de_autos.index', $marca) }}" >{{ $marca->nombre }}</a></li>
+    <li>{{ $modelo->nombre }}</li>
     <li class="active">{{ trans('message.edit') }}</li>
 @endsection
 
@@ -14,7 +16,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 @include('layouts.partials.errors')
-                {!! Form::open(['route' => ['modelos_de_autos.update', $modelo], 'method' => 'PUT']) !!}
+                {!! Form::open(['route' => ['modelos_de_autos.update', 'marcas_de_auto' => $marca ,'modelos_de_auto' => $modelo], 'method' => 'PUT']) !!}
                 <div class="row">
                     <div class="form-group col-md-6">
                         {!! Form::label('marca_id', 'Fabricante') !!}

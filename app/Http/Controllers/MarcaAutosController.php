@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Ticket;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\MarcaAutos;
 
@@ -10,28 +13,29 @@ class MarcaAutosController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function index()
     {
-      $user = Auth::user();
-      $marcas_registradas_por_usuario = MarcaAutos::where('id_usuario', $user->id)
-        ->sortBy('nombre');
-      $marcas_de_otros_usuarios = MarcaAutos::where('id_usuario', '!=', $user->id)
-        ->sortBy('nombre');
-      $marcas = $marcas_registradas_por_usuario->union( $marcas_de_otros_usuarios);
-      $marcas->paginate(30);
-      return view('')->with('marcas', $marcas);
+        $user = Auth::user();
+        $marcas_propias = MarcaAutos::ownerOrAdmin($user)->orderBy('nombre','ASC')->get();
+
+      if ( $user->es_admin() ) {
+          $marcas_ajenas = [];
+      } else {
+          $marcas_ajenas = MarcaAutos::where('user_id', '!=', $user->id)->orderBy('nombre','ASC');
+      }
+      return view('resources.marcas_autos.index')->with('marcas_propias', $marcas_propias)->with('marcas_ajenas', $marcas_ajenas);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function create()
     {
-        return view('');
+        return view('resources.marcas_autos.create');
     }
 
     /**
@@ -40,11 +44,12 @@ class MarcaAutosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request $request )
     {
         $marca = new MarcaAutos( $request->all() );
-        $marca->id_usuario = Auth::user()->id;
+        $marca->user_id = Auth::user()->id;
         $marca->save();
+        flash('Marca de auto creada correctamente', 'success');
         return redirect()->route('marcas_de_autos.index');
     }
 
@@ -54,22 +59,22 @@ class MarcaAutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show( int $id )
     {
         $marca = MarcaAutos::find($id);
-        return view('')->with('marca', $marca);
+        return redirect()->route('modelos_de_autos.index', $marca);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View View
      */
     public function edit($id)
     {
-          $marca = MarcaAutos::find($id);
-          return view('')->with('marca', $marca);
+          $marca = MarcaAutos::ownerOrAdmin( Auth::user() )->find($id);
+          return view('resources.marcas_autos.edit')->with('marca', $marca);
     }
 
     /**
@@ -79,14 +84,27 @@ class MarcaAutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update( Request $request, int $id )
     {
-          $marca = MarcaAutos::find($id);
+          $marca = MarcaAutos::ownerOrAdmin( Auth::user() )->find($id);
           $marca->fill( $request->all() );
-          $marca->id_usuario = ( $marca->id_usuario ) ?
-            $marca->id_usuario : Auth::user()->id;
+          $marca->user_id = ( $marca->id_usuario ) ? $marca->user_id : Auth::user()->id;
           $marca->save();
+
           return redirect()->route('marcas_de_autos.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View View
+     */
+    public function delete( int $id )
+    {
+        $marca = MarcaAutos::find($id);
+        $marca->modelos;
+        return view('resources.marcas_autos.delete')->with('marca', $marca);
     }
 
     /**
@@ -95,10 +113,17 @@ class MarcaAutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( int $id )
     {
           $marca = MarcaAutos::find($id);
-          $marca->delete();
+          $marca->user_id = 1;
+          $marca->save();
+          $ticket = new Ticket();
+          $user = Auth::user();
+          $ticket->user_id = $user->id;
+          $ticket->mensaje = "El usuario '$user->name' <ID: $user->id> intentó eliminar la marca de autos '$marca->nombre' <ID: $marca->id>";
+          $ticket->save();
+          flash('Se notificó a los administradores del sistema para su futura revisión','info');
           return redirect()->route('marcas_de_autos.index');
     }
 }

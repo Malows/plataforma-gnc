@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use App\Ticket;
 use App\MarcaAutos;
 use App\ModeloAutos;
 
@@ -12,33 +13,42 @@ class ModeloAutosController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param int  $marca
      * @return \Illuminate\View\View View
      */
 
-    public function index()
+    public function index( int $marca )
     {
-        $modelos_propios = ModeloAutos::where('user_id', Auth::user()->id)->orderBy('nombre','ASC')->get();
-        $modelos_ajenos = ModeloAutos::where('user_id', '!=', Auth::user()->id)->orderBy('nombre', 'ASC')->get();
-        $modelos_propios->each(function($modelos){
-          $modelos->marca;
-        });
-        $modelos_ajenos->each(function($modelos){
-            $modelos->marca;
-        });
+        $user = Auth::user();
+        $marca = MarcaAutos::find($marca);
+
+        if ( $user->es_admin() ) {
+            $modelos_propios = ModeloAutos::where('marca_autos_id', $marca->id )->orderBy('nombre','ASC')->get();
+            $modelos_ajenos = [];
+        } else {
+            $modelos_propios = ModeloAutos::where('user_id', $user->id)
+                ->where('marca_autos_id', $marca->id )->orderBy('nombre','ASC')->get();
+            $modelos_ajenos = ModeloAutos::where('user_id', '!=', $user->id)
+                ->where('marca_autos_id',$marca->id )->orderBy('nombre', 'ASC')->get();
+        }
+
         return view('resources.modelos_autos.index')
             ->with('modelos_propios', $modelos_propios)
-            ->with('modelos_ajenos', $modelos_ajenos);
+            ->with('modelos_ajenos', $modelos_ajenos)
+            ->with('marca', $marca);
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param int  $marca
      * @return \Illuminate\View\View View
      */
-    public function create()
+    public function create( int $marca )
     {
-        $marcas = MarcaAutos::all();
-        return view('resource.modelos_autos.create')->with('marcas', $marcas);
+        $marca = MarcaAutos::find($marca);
+        $marcas = MarcaAutos::pluck('nombre', 'id');
+        return view('resources.modelos_autos.create')->with('marca', $marca)->with('marcas',$marcas);
     }
 
     /**
@@ -47,38 +57,44 @@ class ModeloAutosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( int $marca, Request $request )
     {
         $modelo = new ModeloAutos( $request->all() );
-        $modelo->id_usuario = Auth::user()->id;
+        $modelo->user_id = Auth::user()->id;
+        $modelo->marca_autos_id = $marca;
         $modelo->save();
         flash('Modelo de autos correctamente creado','success');
-        return redirect()->route('modelos_de_autos.index');
+        return redirect()->route('modelos_de_autos.index', $marca);
     }
 
     /**
      * Display the specified resource.
      *
+     * @param int  $marca
      * @param  int  $id
      * @return \Illuminate\View\View View
      */
-    public function show($id)
+    public function show( int $marca, int $id)
     {
         $modelo = ModeloAutos::find($id);
-        return view('resources.modelos_autos.show')->with('modelo',$modelo);
+        $marca = MarcaAutos::find($marca);
+        return view('resources.modelos_autos.show')->with('marca',$marca)->with('modelo',$modelo);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param int  $marca
      * @param  int  $id
      * @return \Illuminate\View\View View
      */
-    public function edit($id)
+    public function edit( int $marca, int $id )
     {
         $marcas = MarcaAutos::pluck('nombre', 'id');
+        $marca = MarcaAutos::ownerOrAdmin( Auth::user() )->find($marca);
         $modelo = ModeloAutos::find($id);
-        return view('resources.modelos_autos.edit')->with('marcas',$marcas)->with('modelo',$modelo);
+        return view('resources.modelos_autos.edit')->with('marca', $marca)
+            ->with('marcas',$marcas)->with('modelo',$modelo);
     }
 
     /**
@@ -88,43 +104,49 @@ class ModeloAutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update( int $marca, Request $request, $id)
     {
-        $modelo = ModeloAutos::find($id);
+        $modelo = ModeloAutos::ownerOrAdmin( Auth::user() )->find($id);
         $modelo->fill( $request->all() );
         $modelo->user_id = ( $modelo->user_id ) ? $modelo->user_id : Auth::user()->id;
+        $modelo->marca_autos_id = isset( $request->marca_autos_id ) ? $request->marca_autos_id : $marca;
         $modelo->save();
         flash('Modelo de autos correctamente editado','success');
-        return redirect()->route('modelos_de_autos.index');
+        return redirect()->route('modelos_de_autos.index', $marca);
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param int  $marca
+     * @param  int  $id
+     * @return \Illuminate\View\View View
+     */
+    public function delete( int $marca, int $id )
+    {
+        $modelo = ModeloAutos::find($id);
+        $marca = MarcaAutos::find($marca);
+        return view('resources.modelos_autos.delete')->with('marca',$marca)->with('modelo',$modelo);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $marca
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( int $marca, int $id)
     {
         $modelo = ModeloAutos::find($id);
         $modelo->user_id = 1;
         $modelo->save();
-        flash('Modelo de autos correctamente eliminado','success');
-        return redirect()->route('modelos_de_autos.index');
+        $ticket = new Ticket();
+        $user = Auth::user();
+        $ticket->user_id = $user->id;
+        $ticket->mensaje = "El usuario '$user->name' <ID: $user->id> intentó eliminar el modelo de autos '$modelo->nombre' <ID: $modelo->id>, marca de autos ID: $marca";
+        $ticket->save();
+        flash('Se notificó a los administradores del sistema para su futura revisión','info');
+        return redirect()->route('modelos_de_autos.index', $marca);
     }
-
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param  int  $id
-    * @return \Illuminate\View\View View
-    */
-    public function delete($id)
-    {
-        $modelo = ModeloAutos::find($id);
-        $modelo->marca;
-        return view('resources.modelos_autos.delete')->with('modelo',$modelo);
-    }
-
-
 }

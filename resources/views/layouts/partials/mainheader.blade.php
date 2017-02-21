@@ -23,56 +23,61 @@
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
-                        <span class="label label-success">4</span>
+                        <span class="label label-success">{{ $mensajes->count() }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">{{ trans('message.tabmessages') }}</li>
+                        <li class="header">{{ trans_choice('message.n_messages_to_read', $mensajes->count(), ['count' => $mensajes->count()] ) }}</li>
                         <li>
                             <!-- inner menu: contains the messages -->
                             <ul class="menu">
+                                @foreach( $mensajes as $msg )
                                 <li><!-- start message -->
-                                    <a href="#">
+                                    <a href="{{ route('mensajes.show', $msg) }}">
                                         <div class="pull-left">
                                             <!-- User Image -->
-                                            <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image"/>
+                                            <img src="{{ Gravatar::get($msg->from->email) }}" class="img-circle" alt="User Image"/>
                                         </div>
                                         <!-- Message title and timestamp -->
                                         <h4>
-                                            {{ trans('message.supteam') }}
-                                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                            {{ strlen($msg->asunto) > 29 ? substr($msg->asunto,0,26)."..." : $msg->asunto }}
+                                            <small><i class="fa fa-clock-o"></i> {{ $msg->created_at->diffForHumans() }}</small>
                                         </h4>
                                         <!-- The message -->
-                                        <p>{{ trans('message.awesometheme') }}</p>
+                                        <p>{{ strlen($msg->mensaje) > 31 ? substr($msg->mensaje, 0, 28)."..." : $msg->mensaje }}</p>
                                     </a>
                                 </li><!-- end message -->
+                                @endforeach
                             </ul><!-- /.menu -->
                         </li>
-                        <li class="footer"><a href="#">c</a></li>
+                        <li class="footer"><a href="{{ route('mensajes.index') }}">{{ trans('message.viewall') }}</a></li>
                     </ul>
                 </li><!-- /.messages-menu -->
-
+                @if( Auth::user()->es_admin() and $tickets->count() )
                 <!-- Notifications Menu -->
                 <li class="dropdown notifications-menu">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
+                        <span class="label label-warning">{{ $tickets->count() }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">{{ trans('message.notifications') }}</li>
                         <li>
                             <!-- Inner Menu: contains the notifications -->
                             <ul class="menu">
+                                @foreach( $tickets as $ticket)
                                 <li><!-- start notification -->
                                     <a href="#">
-                                        <i class="fa fa-users text-aqua"></i> {{ trans('message.newmembers') }}
+                                        <i class="fa fa-bell"></i> {{ $ticket->mensaje }}
                                     </a>
                                 </li><!-- end notification -->
+                                @endforeach
                             </ul>
                         </li>
-                        <li class="footer"><a href="#">{{ trans('message.viewall') }}</a></li>
+                        <li class="footer"><a href="{{ route('tickets.index') }}">{{ trans('message.viewall') }}</a></li>
                     </ul>
                 </li>
+                @endif
                 <!-- Tasks Menu -->
                 <li class="dropdown tasks-menu">
                     <!-- Menu Toggle Button -->

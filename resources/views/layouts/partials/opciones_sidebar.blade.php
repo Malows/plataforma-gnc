@@ -16,7 +16,7 @@
                 @if(Auth::user()->tipo_usuario_id <= 2)
                     @include('layouts.partials.opciones.diamante')
 
-                    @if(Auth::user()->tipo_usuario_id == 1)
+                    @if(Auth::user()->es_admin())
                         @include('layouts.partials.opciones.admin')
                     @endif
                 @endif
@@ -41,7 +41,7 @@
                 @if(Auth::user()->tipo_usuario_id <= 2)
                     @include('layouts.partials.opciones.diamante_scripts')
 
-                    @if(Auth::user()->tipo_usuario_id == 1)
+                    @if(Auth::user()->es_admin())
                         @include('layouts.partials.opciones.admin_scripts')
 
                     @endif

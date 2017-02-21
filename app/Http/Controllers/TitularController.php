@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Response;
+//use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+//use Illuminate\View\View;
 use App\Titular;
 use App\Vehiculo;
 
@@ -19,11 +19,14 @@ class TitularController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $titulares = ( $user->tipo_usuario_id === 1 ) ?
-          Titular::all() : Titular::where('id_usuario', $user->id) ;
-        $titulares->sortBy('apellido')->sortBy('nombre')->paginate(20);
-        return view('')->with('titulares',$titulares);
+        $titulares = NULL;
+        if ( Auth::user()->es_admin() ){
+            $titulares = Titular::paginate(20);
+        } else {
+            $titulares = Titular::where('user_id', Auth::user()->id)
+                ->sortBy('apellido')->sortBy('nombre')->paginate(20);
+        }
+        return view('resources.titulares.index')->with('titulares',$titulares);
     }
 
     /**
@@ -33,7 +36,7 @@ class TitularController extends Controller
      */
     public function create()
     {
-        return view('');
+        return view('resources.titulares.create');
     }
 
     /**
@@ -47,6 +50,7 @@ class TitularController extends Controller
         $titular = new Titular( $request->all() );
         $titular->user_id = Auth::user()->id;
         $titular->save();
+        flash('Titular creado correctamente','success');
         return redirect()->route('titulares.index');
     }
 
@@ -61,7 +65,7 @@ class TitularController extends Controller
         $titular = Titular::find($id);
         $titular->vehiculos;
         $titular->localidad;
-        return view('')->with('titular',$titular);
+        return view('resources.titulares.show')->with('titular',$titular);
     }
 
     /**
@@ -72,13 +76,9 @@ class TitularController extends Controller
      */
     public function edit($id)
     {
-        $user = Auth::user();
-        $vehiculos = ( $user->tipo_usuario_id === 1 ) ?
-          Vehiculo::all() : Vehiculo::where('id_usuario', $user->id) ;
-
         $titular = Titular::find($id);
         $titular->vehiculos;
-        return view('')->with('titular',$titular)->with('vehiculos',$vehiculos);
+        return view('resources.titulares.edit')->with('titular',$titular);
     }
 
     /**
@@ -92,11 +92,23 @@ class TitularController extends Controller
     {
         $titular = Titular::find($id);
         $titular->fill( $request->all() );
-
-        $titular->id_usuario = ( $titular->id_usuario ) ?
-          $titular->id_usuario : Auth::user()->id;
+        $titular->user_id = ( $titular->user_id ) ? $titular->user_id : Auth::user()->id;
         $titular->save();
+        flash('Los datos del titular se editaron correctamente','success');
         return redirect()->route('titulares.index');
+    }
+
+    /**
+     * Show the form for deleting the specified resource
+     * 
+     * @param int  $id
+     * @return \Illuminate\View\View View
+     */
+    public function delete( int $id )
+    {
+        $titular = Titular::find( $id );
+        $titular->vehiculos;
+        return view('resources.titulares.delete')->with('titular',$titular);
     }
 
     /**
@@ -109,6 +121,35 @@ class TitularController extends Controller
     {
         $titular = Titular::find($id);
         $titular->delete();
+        flash('Titular eliminado correctamente. Para restaurar el titular eliminar, consulte un administrador','info');
+        return redirect()->route('titulares.index');
+    }
+
+    /**
+     * Erase the specified softDeleted resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function erase( $id )
+    {
+        $titular = Titular::find( $id );
+        $titular->forceDelete();
+        flash('Titular borrado permanentemente','warning');
+        return redirect()->route('titulares.index');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore( $id )
+    {
+        $titular = Titular::find( $id );
+        $titular->restore();
+        flash('Titular restaurado correctamente','success');
         return redirect()->route('titulares.index');
     }
 }

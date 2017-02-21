@@ -1,0 +1,61 @@
+.ticket-box  {
+  padding: 20px 30px;
+  color: #1f1f1f;
+
+  .ticket-from {
+    color: #111;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+    text-align: left;
+  }
+  .ticket-body {
+    color: #111;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 100;
+    line-height: 18px;
+    text-align: justify;
+  }
+}
+
+.message-box {
+  padding: 20px 30px;
+  background-color: #f5f7f9;
+  font-family: 'Helvetica Neue', sans-serif;
+  line-height: 1.8;
+  color: #333;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    padding: 20px 30px;
+  }
+  h3 {
+    font-size: 22px;
+    font-weight: 500;
+    padding: 10px 10px;
+    text-align: right;
+  }
+  .message-body {
+    border-left: solid 4px #aaa;
+    padding: 0 2em;
+    font-size: 16px;
+    text-indent: 2em;
+    text-align: justify;
+  }
+  small {
+    font-size: 12px;
+    font-style: italic;
+    text-align: right;
+  }
+
+}
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > h4 {
+  margin: 10px 0 0 45px;
+  > small {
+    top: -10px;
+  }
+}

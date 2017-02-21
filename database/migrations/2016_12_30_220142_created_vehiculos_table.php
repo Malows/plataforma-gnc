@@ -39,6 +39,7 @@ class CreatedVehiculosTable extends Migration
 
             $table->unsignedInteger('año');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -6,7 +6,8 @@
 
 @section('leveler')
     <li><a href="{{  route('marcas_de_autos.index') }}"><i class="fa fa-dashboard"></i> {{ trans('message.marcas_de_autos') }}</a></li>
-    <li class="active">{{ trans('message.create') }}</li>
+    <li>{{ $marca->nombre }}</li>
+    <li class="active">{{ trans('message.edit') }}</li>
 @endsection
 
 @section('main-content')
@@ -14,7 +15,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 @include('layouts.partials.errors')
-                {!! Form::open(['route' => 'marcas_de_autos.update', 'method' => 'PUT']) !!}
+                {!! Form::open(['route' => ['marcas_de_autos.update', $marca], 'method' => 'PUT']) !!}
                 <div class="form-group">
                     {!! Form::label('nombre', 'Nombre del fabricante') !!}
                     {!! Form::text('nombre', $marca->nombre, ['class' =>'form-control', 'required']) !!}

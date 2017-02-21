@@ -29,7 +29,7 @@ class UserController extends Controller
         $users->each(function ($users){
             $users->tipo_usuario;
             $users->inicio = Carbon::parse($users->fecha_de_licencia);
-            $users->fin = ($users->tipo_usuario_id === 1) ?
+            $users->fin = ($users->es_admin()) ?
                 Carbon::maxValue() :
                 Carbon::parse($users->fecha_de_licencia)->addDays($users->duracion_de_licencia);
             $users->diferencia = Carbon::now()->diffForHumans($users->fin);
@@ -75,7 +75,7 @@ class UserController extends Controller
     {
         $usuario = User::find( $id );
         $usuario->tipo_usuario;
-        if ( $usuario->tipo_usuario_id != 1) {
+        if ( ! $usuario->es_admin() ) {
             $usuario->titulares;
             $usuario->titulares->each(function ($titulares){
                 $titulares->vehiculos;
@@ -89,7 +89,7 @@ class UserController extends Controller
             });
         }
         $usuario->inicio = Carbon::parse($usuario->fecha_de_licencia);
-        $usuario->fin = ($usuario->tipo_usuario_id === 1) ?
+        $usuario->fin = ($usuario->es_admin()) ?
             Carbon::maxValue() :
             Carbon::parse($usuario->fecha_de_licencia)->addDays($usuario->duracion_de_licencia);
         $usuario->diferencia = Carbon::now()->diffForHumans($usuario->fin);

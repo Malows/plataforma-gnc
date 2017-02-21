@@ -3,30 +3,32 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Titular extends Model
 {
-  protected $table = 'titulares';
+    use softDeletes;
 
-  protected $fillable = [
-      'nombre', 'apellido',
-      'dni', 'domicilio', 'id_localidad',
-      'telefono', 'email', 'contacto', 'id_usuario'
-  ];
+    protected $table = 'titulares';
 
-  public function localidad()
-  {
+    protected $fillable = [ 'nombre', 'apellido', 'dni', 'domicilio', 'id_localidad', 'telefono',
+        'email', 'contacto', 'id_usuario' ];
+
+    protected $dates = ['deleted_at'];
+
+    public function localidad()
+    {
     return $this->belongsTo('App\Localidad');
-  }
+    }
 
-  public function vehiculos()
-  {
+    public function vehiculos()
+    {
     return $this->hasMany('App\Vehiculo');
-  }
+    }
 
-  public function usuario()
-  {
+    public function usuario()
+    {
     return $this->belongsTo('App\User');
-  }
+    }
 
 }
