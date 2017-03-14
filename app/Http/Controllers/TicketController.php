@@ -20,7 +20,7 @@ class TicketController extends Controller
         $tickets->each( function ($ticket) {
             $ticket->user;
         });
-        return view('resources.tickets.index')->with('tickets',$tickets);
+        return view('resources.comun.tickets.index')->with('tickets',$tickets);
     }
 
     /**
@@ -33,7 +33,7 @@ class TicketController extends Controller
         if ( ! Auth::user()->es_admin() ) {
             flash('Puede reducir el tiempo de espera para la respuesta de su ticket adquiriendo el servicio de <a href="#">Alerta Inmediata</a>','info');
         }
-        return view('resources.tickets.create');
+        return view('resources.comun.tickets.create');
     }
 
     /**
@@ -60,7 +60,7 @@ class TicketController extends Controller
     public function show( int $id )
     {
         $ticket = Ticket::ownerOrAdmin( Auth::user() )->find( $id );
-        return view('resources.tickets.show')->with('ticket',$ticket);
+        return view('resources.comun.tickets.show')->with('ticket',$ticket);
     }
 
     /**
@@ -73,7 +73,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::ownerOrAdmin( Auth::user() )->find( $id );
 
-        return view('resources.tickets.edit')->with('ticket',$ticket);
+        return view('resources.comun.tickets.edit')->with('ticket',$ticket);
     }
 
     /**

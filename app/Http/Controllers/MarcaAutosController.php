@@ -25,7 +25,7 @@ class MarcaAutosController extends Controller
       } else {
           $marcas_ajenas = MarcaAutos::where('user_id', '!=', $user->id)->orderBy('nombre','ASC');
       }
-      return view('resources.marcas_autos.index')->with('marcas_propias', $marcas_propias)->with('marcas_ajenas', $marcas_ajenas);
+      return view('resources.comun.marcas_autos.index')->with('marcas_propias', $marcas_propias)->with('marcas_ajenas', $marcas_ajenas);
     }
 
     /**
@@ -35,7 +35,7 @@ class MarcaAutosController extends Controller
      */
     public function create()
     {
-        return view('resources.marcas_autos.create');
+        return view('resources.comun.marcas_autos.create');
     }
 
     /**
@@ -74,7 +74,7 @@ class MarcaAutosController extends Controller
     public function edit($id)
     {
           $marca = MarcaAutos::ownerOrAdmin( Auth::user() )->find($id);
-          return view('resources.marcas_autos.edit')->with('marca', $marca);
+          return view('resources.comun.marcas_autos.edit')->with('marca', $marca);
     }
 
     /**
@@ -104,7 +104,7 @@ class MarcaAutosController extends Controller
     {
         $marca = MarcaAutos::find($id);
         $marca->modelos;
-        return view('resources.marcas_autos.delete')->with('marca', $marca);
+        return view('resources.comun.marcas_autos.delete')->with('marca', $marca);
     }
 
     /**

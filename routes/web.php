@@ -58,6 +58,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/servicios_de_taller', 'ServicioDeTallerController');
             Route::resource('/trabajos_de_taller', 'TrabajoDeTallerController');
             Route::get('trabajos_de_taller/{id}/advance', ['uses' => 'TrabajoDeTallerController@advance', 'as' => 'trabajos_de_taller.advance']);
+            Route::resource('/marcas_de_cilindros', 'MarcaCilindroController');
+            Route::resource('/datos_de_cilindros','DatosCilindroController');
+            Route::resource('/cilindros', 'CilindroController');
         });
 
         Route::resource('/tickets',             'TicketController');

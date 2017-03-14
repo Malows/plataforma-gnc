@@ -21,7 +21,7 @@ class TrabajoDeTallerController extends Controller
     {
         $trabajos = TrabajoDeTaller::ownerOrAdmin( Auth::user() )->orderBy('created_at','DESC')->paginate(20);
         $servicios = ServicioDeTaller::pluck('nombre','id');
-        return view('resources.trabajos_de_taller.index',['trabajos' => $trabajos, 'servicios' => $servicios]);
+        return view('resources.plata.trabajos_de_taller.index',['trabajos' => $trabajos, 'servicios' => $servicios]);
     }
 
     /**
@@ -41,7 +41,7 @@ class TrabajoDeTallerController extends Controller
         $aux = array_pluck($titulares->toArray(), 'full_name', 'id');
 
         $servicios = ServicioDeTaller::pluck('nombre','id');
-        return view('resources.trabajos_de_taller.create', ['servicios' => $servicios, 'titulares' => $aux]);
+        return view('resources.plata.trabajos_de_taller.create', ['servicios' => $servicios, 'titulares' => $aux]);
     }
 
     /**
@@ -107,7 +107,7 @@ class TrabajoDeTallerController extends Controller
         $vehiculos = array_pluck( $vehiculos->toArray(), 'nombre', 'id');
 
 
-        return view('resources.trabajos_de_taller.edit',['trabajo' => $trabajo, 'titulares' => $titulares, 'servicios' => $servicios, 'vehiculos' => $vehiculos]);
+        return view('resources.plata.trabajos_de_taller.edit',['trabajo' => $trabajo, 'titulares' => $titulares, 'servicios' => $servicios, 'vehiculos' => $vehiculos]);
     }
 
     /**

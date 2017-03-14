@@ -15,7 +15,7 @@ class ProvinciaController extends Controller
     public function index()
     {
         $provincias = Provincia::orderBy('nombre', 'ASC')->get();
-        return view('resources.provincias.index')->with('provincias',$provincias);
+        return view('resources.comun.provincias.index')->with('provincias',$provincias);
     }
 
     /**

@@ -21,7 +21,7 @@ class LocalidadController extends Controller
             ->orderBy('codigo_postal', 'ASC')->get();
 
         $provincia = Provincia::find($provincia);
-        return view('resources.localidades.index')
+        return view('resources.comun.localidades.index')
             ->with('localidades', $localidades)->with('provincia',$provincia);
     }
 
@@ -35,7 +35,7 @@ class LocalidadController extends Controller
     {
         $provincias = Provincia::orderBy('nombre','ASC')->pluck('nombre','id');
 
-        return view('resources.localidades.create')
+        return view('resources.comun.localidades.create')
             ->with('provincias', $provincias)
             ->with('provincia_elegida', $provincia);
     }
@@ -68,7 +68,7 @@ class LocalidadController extends Controller
         $localidad = Localidad::find($id);
         $provincia = Provincia::find($provincia);
         $localidad->titulares;
-        return view('resources.localidades.show')->with('provincia', $provincia)->with('localidad', $localidad);
+        return view('resources.comun.localidades.show')->with('provincia', $provincia)->with('localidad', $localidad);
     }
 
     /**
@@ -83,7 +83,7 @@ class LocalidadController extends Controller
         $localidad = Localidad::find($id);
         $provincia = Provincia::find($provincia);
         $provincias = Provincia::orderBy('nombre','ASC')->pluck('nombre','id');
-        return view('resources.localidades.edit')
+        return view('resources.comun.localidades.edit')
             ->with('provincia', $provincia)->with('localidad', $localidad)->with('provincias', $provincias);
     }
 
@@ -118,7 +118,7 @@ class LocalidadController extends Controller
         $provincia = Provincia::find( $provincia );
         $localidad->titulares;
 
-        return view('resources.localidades.delete')->with('provincia', $provincia)->with('localidad', $localidad);
+        return view('resources.comun.localidades.delete')->with('provincia', $provincia)->with('localidad', $localidad);
     }
 
     /**

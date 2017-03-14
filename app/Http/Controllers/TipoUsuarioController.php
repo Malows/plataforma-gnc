@@ -15,7 +15,7 @@ class TipoUsuarioController extends Controller
     public function index()
     {
         $tipos = TipoUsuario::orderBy('id','ASC')->get();
-        return view('resources.tipos_usuarios.index')->with('tipos_usuarios',$tipos);
+        return view('resources.admin.tipos_usuarios.index')->with('tipos_usuarios',$tipos);
     }
 
     /**
@@ -25,7 +25,7 @@ class TipoUsuarioController extends Controller
      */
     public function create()
     {
-        return view('resources.tipos_usuarios.create');
+        return view('resources.admin.tipos_usuarios.create');
     }
 
     /**
@@ -64,7 +64,7 @@ class TipoUsuarioController extends Controller
     public function edit($id)
     {
         $tipo = TipoUsuario::find($id);
-        return view('resources.tipos_usuarios.edit')->with('tipo_usuario',$tipo);
+        return view('resources.admin.tipos_usuarios.edit')->with('tipo_usuario',$tipo);
     }
 
     /**
@@ -91,7 +91,7 @@ class TipoUsuarioController extends Controller
     public function delete(int $id)
     {
         $tipo = TipoUsuario::find( $id );
-        return view('resources.tipos_usuarios.delete')->with('tipo_usuario', $tipo);
+        return view('resources.admin.tipos_usuarios.delete')->with('tipo_usuario', $tipo);
     }
 
     /**

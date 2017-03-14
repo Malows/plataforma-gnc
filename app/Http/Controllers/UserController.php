@@ -34,7 +34,7 @@ class UserController extends Controller
                 Carbon::parse($users->fecha_de_licencia)->addDays($users->duracion_de_licencia);
             $users->diferencia = Carbon::now()->diffForHumans($users->fin);
         });
-        return view('resources.usuarios.index')->with('usuarios',$users);
+        return view('resources.admin.usuarios.index')->with('usuarios',$users);
     }
 
     /**
@@ -45,7 +45,7 @@ class UserController extends Controller
     public function create()
     {
         $tipos = TipoUsuario::pluck('nombre', 'id');
-        return view('resources.usuarios.create')->with('tipos_de_usuarios', $tipos);
+        return view('resources.admin.usuarios.create')->with('tipos_de_usuarios', $tipos);
     }
 
     /**
@@ -93,7 +93,7 @@ class UserController extends Controller
             Carbon::maxValue() :
             Carbon::parse($usuario->fecha_de_licencia)->addDays($usuario->duracion_de_licencia);
         $usuario->diferencia = Carbon::now()->diffForHumans($usuario->fin);
-        return view('resources.usuarios.show')->with('usuario',$usuario);
+        return view('resources.admin.usuarios.show')->with('usuario',$usuario);
 
     }
 
@@ -108,7 +108,7 @@ class UserController extends Controller
         $usuario = User::find( $id );
         $usuario->tipo_usuario;
         $tipos = TipoUsuario::pluck('nombre', 'id');
-        return view('resources.usuarios.edit')->with('usuario',$usuario)->with('tipos_de_usuarios', $tipos);
+        return view('resources.admin.usuarios.edit')->with('usuario',$usuario)->with('tipos_de_usuarios', $tipos);
     }
 
     /**
@@ -178,6 +178,6 @@ class UserController extends Controller
         $usuario->marcas_de_autos_registradas;
         $usuario->modelos_de_autos_registrados;
 
-        return view('resources.usuarios.delete')->with('usuario', $usuario);
+        return view('resources.admin.usuarios.delete')->with('usuario', $usuario);
     }
 }

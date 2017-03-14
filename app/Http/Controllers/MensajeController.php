@@ -24,7 +24,7 @@ class MensajeController extends Controller
     {
         $mensajes = Mensaje::owner(Auth::user())->get();
         $mensajes->each(function($m){ $m->from;});
-        return view('resources.mensajes.index')->with('mensajes',$mensajes);
+        return view('resources.comun.mensajes.index')->with('mensajes',$mensajes);
     }
 
     /**
@@ -39,7 +39,7 @@ class MensajeController extends Controller
         } else {
             $usuarios = User::where('tipo_usuario_id', 1)->where('id', '<>', Auth::user()->id )->pluck('name','id');
         }
-        return view('resources.mensajes.create')->with('usuarios_disponibles', $usuarios);
+        return view('resources.comun.mensajes.create')->with('usuarios_disponibles', $usuarios);
     }
 
     /**
@@ -71,7 +71,7 @@ class MensajeController extends Controller
         $mensaje->save();
         $mensaje->from;
         $mensaje->created_at = Carbon::parse($mensaje->created_at);
-        return view('resources.mensajes.show')->with('mensaje',$mensaje);
+        return view('resources.comun.mensajes.show')->with('mensaje',$mensaje);
     }
 
     /**

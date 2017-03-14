@@ -25,7 +25,7 @@ class VehiculoController extends Controller
             $vehiculo->modelo;
             $vehiculo->marca;
         });
-        return view('resources.vehiculos.index', ['vehiculos' => $vehiculos]);
+        return view('resources.bronce.vehiculos.index', ['vehiculos' => $vehiculos]);
     }
 
     /**
@@ -46,7 +46,7 @@ class VehiculoController extends Controller
 
         $marcas = MarcaAutos::pluck('nombre', 'id');
 
-        return view('resources.vehiculos.create', ['titulares'=>$aux, 'marcas' => $marcas]);
+        return view('resources.bronce.vehiculos.create', ['titulares'=>$aux, 'marcas' => $marcas]);
     }
 
     /**
@@ -80,7 +80,7 @@ class VehiculoController extends Controller
 //        if( Auth::user()->tipo_usuario_id <= 5 ) {
 //            $vehiculo->trabajos_de_taller;
 //        }
-        return view('resources.vehiculos.show', ['vehiculo' => $vehiculo]);
+        return view('resources.bronce.vehiculos.show', ['vehiculo' => $vehiculo]);
     }
 
     /**
@@ -108,7 +108,7 @@ class VehiculoController extends Controller
         $marcas = MarcaAutos::pluck('nombre', 'id')->toArray();
         $modelos = ModeloAutos::where('marca_autos_id', $vehiculo->marca_id)->pluck('nombre','id')->toArray();
 
-        return view('resources.vehiculos.edit',
+        return view('resources.bronce.vehiculos.edit',
             ['vehiculo' => $vehiculo, 'titulares' => $aux, 'marcas' => $marcas, 'modelos' => $modelos]);
     }
 

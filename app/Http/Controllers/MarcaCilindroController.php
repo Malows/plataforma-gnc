@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DatosCilindro;
+use App\MarcaCilindro;
+use App\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MarcaCilindroController extends Controller
 {
@@ -13,7 +17,8 @@ class MarcaCilindroController extends Controller
      */
     public function index()
     {
-        //
+        $marcas = MarcaCilindro::orderBy('nombre')->paginate(20);
+        return view('resources.plata.marcas_de_cilindros.index',['marcas' => $marcas]);
     }
 
     /**
@@ -23,7 +28,7 @@ class MarcaCilindroController extends Controller
      */
     public function create()
     {
-        //
+        return view('resources.plata.marcas_de_cilindros.create');
     }
 
     /**
@@ -34,7 +39,10 @@ class MarcaCilindroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $marca = new MarcaCilindro( $request->all() );
+        $marca->save();
+        flash('Marca de cilindros creada correctamente', 'success');
+        return redirect()->route('marcas_de_cilindros.index');
     }
 
     /**
@@ -45,7 +53,9 @@ class MarcaCilindroController extends Controller
      */
     public function show($id)
     {
-        //
+        $marca = MarcaCilindro::find($id);
+        $datos = DatosCilindro::where('marca_cilindro_id', $marca->id)->orderBy('codigo_homologado')->get();
+        return view('resources.plata.marcas_de_cilindros.show',['marca' => $marca, 'datos' => $datos]);
     }
 
     /**
@@ -56,7 +66,8 @@ class MarcaCilindroController extends Controller
      */
     public function edit($id)
     {
-        //
+        $marca = MarcaCilindro::ownerOrAdmin(Auth::user())->find($id);
+        return view('resources.plata.marcas_de_cilindros.edit',['marca' => $marca]);
     }
 
     /**
@@ -68,7 +79,11 @@ class MarcaCilindroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $marca = MarcaCilindro::ownerOrAdmin(Auth::user())->find($id);
+        $marca->fill( $request->all() );
+        $marca->save();
+        flash('Se modificó correctamente la marca de cilindros', 'success');
+        return redirect()->route('marcas_de_cilindros.index');
     }
 
     /**
@@ -79,6 +94,15 @@ class MarcaCilindroController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Auth::user();
+        $marca = MarcaCilindro::find($id);
+        $marca->user_id = 1;
+        $marca->save();
+        $ticket = new Ticket();
+        $ticket->user_id = $user->id;
+        $ticket->mensaje = "El usuario '$user->name' <ID: $user->id> intentó eliminar la marca de cilindros '$marca->nombre' <ID: $marca->id>";
+        $ticket->save();
+        flash('Se notificó a los administradores del sistema para su futura revisión','info');
+        return redirect()->route('marcas_de_cilindros.index');
     }
 }

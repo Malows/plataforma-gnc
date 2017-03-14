@@ -32,7 +32,7 @@ class ModeloAutosController extends Controller
                 ->where('marca_autos_id',$marca->id )->orderBy('nombre', 'ASC')->get();
         }
 
-        return view('resources.modelos_autos.index')
+        return view('resources.comun.modelos_autos.index')
             ->with('modelos_propios', $modelos_propios)
             ->with('modelos_ajenos', $modelos_ajenos)
             ->with('marca', $marca);
@@ -48,7 +48,7 @@ class ModeloAutosController extends Controller
     {
         $marca = MarcaAutos::find($marca);
         $marcas = MarcaAutos::pluck('nombre', 'id');
-        return view('resources.modelos_autos.create')->with('marca', $marca)->with('marcas',$marcas);
+        return view('resources.comun.modelos_autos.create')->with('marca', $marca)->with('marcas',$marcas);
     }
 
     /**
@@ -78,7 +78,7 @@ class ModeloAutosController extends Controller
     {
         $modelo = ModeloAutos::find($id);
         $marca = MarcaAutos::find($marca);
-        return view('resources.modelos_autos.show')->with('marca',$marca)->with('modelo',$modelo);
+        return view('resources.comun.modelos_autos.show')->with('marca',$marca)->with('modelo',$modelo);
     }
 
     /**
@@ -93,7 +93,7 @@ class ModeloAutosController extends Controller
         $marcas = MarcaAutos::pluck('nombre', 'id');
         $marca = MarcaAutos::ownerOrAdmin( Auth::user() )->find($marca);
         $modelo = ModeloAutos::find($id);
-        return view('resources.modelos_autos.edit')->with('marca', $marca)
+        return view('resources.comun.modelos_autos.edit')->with('marca', $marca)
             ->with('marcas',$marcas)->with('modelo',$modelo);
     }
 
@@ -126,7 +126,7 @@ class ModeloAutosController extends Controller
     {
         $modelo = ModeloAutos::find($id);
         $marca = MarcaAutos::find($marca);
-        return view('resources.modelos_autos.delete')->with('marca',$marca)->with('modelo',$modelo);
+        return view('resources.comun.modelos_autos.delete')->with('marca',$marca)->with('modelo',$modelo);
     }
 
     /**

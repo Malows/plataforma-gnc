@@ -23,7 +23,7 @@ class ServicioDeTallerController extends Controller
         } else {
             $servicios_ajenos = ServicioDeTaller::where('user_id', '!=', Auth::user()->id );
         }
-        return view('resources.servicios_de_taller.index', ['servicios_propios' => $servicios_propios, 'servicios_ajenos' => $servicios_ajenos]);
+        return view('resources.plata.servicios_de_taller.index', ['servicios_propios' => $servicios_propios, 'servicios_ajenos' => $servicios_ajenos]);
     }
 
     /**
@@ -33,7 +33,7 @@ class ServicioDeTallerController extends Controller
      */
     public function create()
     {
-        return view('resources.servicios_de_taller.create');
+        return view('resources.plata.servicios_de_taller.create');
     }
 
     /**
@@ -65,7 +65,7 @@ class ServicioDeTallerController extends Controller
         $trabajos->each(function($f){
             $f->vehiculo;
         });
-        return view('resources.servicios_de_taller.show',['servicio' => $servicio, 'trabajos' => $trabajos]);
+        return view('resources.plata.servicios_de_taller.show',['servicio' => $servicio, 'trabajos' => $trabajos]);
     }
 
     /**
@@ -77,7 +77,7 @@ class ServicioDeTallerController extends Controller
     public function edit(int $id)
     {
         $servicio = ServicioDeTaller::ownerOrAdmin( Auth::user() )->find($id);
-        return view('resources.servicios_de_taller.edit',['servicio', $servicio]);
+        return view('resources.plata.servicios_de_taller.edit',['servicio', $servicio]);
     }
 
     /**

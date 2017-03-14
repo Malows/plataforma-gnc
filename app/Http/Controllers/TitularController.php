@@ -21,7 +21,7 @@ class TitularController extends Controller
     public function index()
     {
         $titulares = Titular::ownerOrAdmin( Auth::user() )->orderBy('apellido')->orderBy('nombre')->paginate(20);
-        return view('resources.titulares.index')->with('titulares',$titulares);
+        return view('resources.bronce.titulares.index')->with('titulares',$titulares);
     }
 
     /**
@@ -32,7 +32,7 @@ class TitularController extends Controller
     public function create()
     {
         $provincias = Provincia::pluck('nombre','id');
-        return view('resources.titulares.create', ['provincias' => $provincias]);
+        return view('resources.bronce.titulares.create', ['provincias' => $provincias]);
     }
 
     /**
@@ -61,7 +61,7 @@ class TitularController extends Controller
         $titular = Titular::ownerOrAdmin( Auth::user() )->find($id);
         $titular->vehiculos;
         $titular->localidad;
-        return view('resources.titulares.show')->with('titular',$titular);
+        return view('resources.bronce.titulares.show')->with('titular',$titular);
     }
 
     /**
@@ -77,7 +77,7 @@ class TitularController extends Controller
         $titular->vehiculos;
         $titular->localidad;
         $localidades = Localidad::where('provincia_id',$titular->localidad->provincia_id)->pluck('nombre','id');
-        return view('resources.titulares.edit',
+        return view('resources.bronce.titulares.edit',
             ['titular' => $titular, 'provincias'=> $provincias,'localidades' =>$localidades]);
     }
 
@@ -108,7 +108,7 @@ class TitularController extends Controller
     {
         $titular = Titular::ownerOrAdmin( Auth::user() )->find( $id );
         $titular->vehiculos;
-        return view('resources.titulares.delete')->with('titular',$titular);
+        return view('resources.bronce.titulares.delete')->with('titular',$titular);
     }
 
     /**
