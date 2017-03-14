@@ -44,7 +44,7 @@ class TicketController extends Controller
      */
     public function store( Request $request )
     {
-        $ticket = new Ticket( $request->fill() );
+        $ticket = new Ticket( $request->all() );
         $ticket->user_id = Auth::user()->id;
         $ticket->save();
         flash('Ticket generado correctamente, pronto recibirá asistencia de un administrador', 'success');

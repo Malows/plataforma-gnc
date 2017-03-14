@@ -9,7 +9,7 @@ class MarcaAutos extends Model
     protected $table = 'marcas_autos';
 
     protected $fillable = [
-      'nombre', 'id_usuario'
+      'nombre', 'user_id'
     ];
 
     public function modelos()

@@ -21,7 +21,7 @@ class CreateMarcasAutosTable extends Migration
             ->comment("Quien agregó la marca de autos. Si fletamos usuarios, nos quedamos con sus datos, bien gracias");
             $table->foreign('user_id')
             ->references('id')->on('users')
-            ->onUpdate('cascade');
+            ->onDelete('set default')->onUpdate('cascade');
 
             $table->timestamps();
         });

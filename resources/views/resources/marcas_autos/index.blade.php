@@ -29,8 +29,10 @@
                         <tr>
                             <td><a href="{{ route('modelos_de_autos.index', $marca) }}">{{ $marca->nombre }}</a></td>
                             <td>
-                                <a href="{{ route('marcas_de_autos.edit', $marca) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                <a href="{{ route('marcas_de_autos.delete', $marca) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+                                <div class="btn-group">
+                                    <a href="{{ route('marcas_de_autos.edit', $marca) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ route('marcas_de_autos.delete', $marca) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -39,5 +39,7 @@ elixir(function(mix) {
         .copy('node_modules/icheck/skins/square/blue.png','public/css')
         .copy('node_modules/icheck/skins/square/blue@2x.png','public/css')
         .copy('node_modules/trumbowyg/dist/**', 'public/plugins/trumbowyg')
+        .copy('node_modules/select2/dist/**','public/plugins/select2')
+        .copy('node_modules/select2-bootstrap-theme/dist/*.*', 'public/plugins/select2/css')
         .webpack('app.js');
 });

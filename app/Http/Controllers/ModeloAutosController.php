@@ -149,4 +149,12 @@ class ModeloAutosController extends Controller
         flash('Se notificó a los administradores del sistema para su futura revisión','info');
         return redirect()->route('modelos_de_autos.index', $marca);
     }
+
+    public function  api_index( int $id_marca )
+    {
+        $modelos = ModeloAutos::where('marca_autos_id', $id_marca)->select('nombre', 'id')
+            ->orderBy('nombre')->get();
+        $marca = MarcaAutos::select('nombre', 'id')->find( $id_marca );
+        return ['data' => ['modelos' => $modelos, 'marca' => $marca]];
+    }
 }

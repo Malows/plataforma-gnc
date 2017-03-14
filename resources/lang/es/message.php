@@ -146,6 +146,7 @@ return [
     'awesometheme'            => '¿Por qué no comprar un nuevo tema impresionante?',
     'allmessages'             => 'Ver todos los mensajes',
     'notifications'           => 'Tiene 10 notificaciones',
+    'n_notifications'         => '{0} No tiene notificaciones nuevas|{1} Tiene :count notificación nueva |[2,*] Tiene :count notificaciones nuevas',
     'newmembers'              => '5 nuevos miembros se unieron hoy',
     'viewall'                 => 'Veure tot',
     'tasks'                   => 'Ver todas las tareas',
@@ -200,6 +201,11 @@ return [
     'titulares'             => 'Titulares',
     'tickets'               => 'Tickets',
     'mensajes'              => 'Mensajes',
+    'servicios_de_taller'   => 'Servicios de taller',
+    'trabajos_de_taller'    => 'Trabajos de taller',
+    'cilindros'             => 'Cilindros',
+    'marcas_de_cilindros'   => 'Marcas de cilindros',
+    'datos_de_cilindros'    => 'Datos de cilindros',
 
 
     'email'                   => 'Correo Electrónico',

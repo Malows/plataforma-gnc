@@ -11,7 +11,7 @@ class Vehiculo extends Model
 
     protected $table = 'vehiculos';
 
-    protected $fillable = [ 'dominio', 'id_titular', 'id_marca', 'id_modelo', 'id_usuario', 'año' ];
+    protected $fillable = [ 'dominio', 'titular_id', 'marca_id', 'modelo_id', 'user_id', 'año' ];
 
     protected $dates = ['deleted_at'];
 
@@ -27,11 +27,24 @@ class Vehiculo extends Model
 
     public function marca()
     {
-    return $this->belongsTo('App\MarcaAutos');
+        return $this->belongsTo('App\MarcaAutos');
     }
 
     public function modelo()
     {
-    return $this->belongsTo('App\ModeloAutos');
+        return $this->belongsTo('App\ModeloAutos');
+    }
+
+    public function trabajos_de_taller()
+    {
+        return $this->hasMany('App\TrabajoDeTaller');
+    }
+
+    public function scopeOwnerOrAdmin($query, User $user)
+    {
+        if ( $user->es_admin() ) {
+            return $query->withTrashed();
+        }
+        return $query->where('user_id', $user->id);
     }
 }

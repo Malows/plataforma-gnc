@@ -143,8 +143,8 @@ class LocalidadController extends Controller
     public function api_index($provincia)
     {
         $localidades = Localidad::search($provincia)->select('id', 'nombre', 'codigo_postal')
-            ->orderBy('codigo_postal', 'ASC')->get();
+            ->orderBy('nombre', 'ASC')->get();
         $provincia = Provincia::find($provincia);
-        return response()->json(['data' => ['lista' => $localidades, 'provincia' => $provincia]]);
+        return response()->json(['data' => ['localidades' => $localidades, 'provincia' => $provincia]]);
     }
 }

@@ -27,7 +27,7 @@ class Mensaje extends Model
         return $this->leido === null;
     }
 
-    public function scopeOwner($query, $user)
+    public function scopeOwner($query, User $user)
     {
         return $query->where('to_id', '=', $user->id);
     }

@@ -11,12 +11,14 @@
         "laravelcollective/html": "^5.4",
         "laracasts/flash": "^2.0",
         "nesbot/carbon": "^1.21",
-        "laravel/dusk": "^1.0",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "barryvdh/laravel-dompdf": "^0.8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
+        "laravel/browser-kit-testing": "^1.0",
+        "laravel/dusk": "^1.0",
         "phpunit/phpunit": "^5.7",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*"
@@ -26,12 +28,14 @@
             "database"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Tests\\": "tests/"
         }
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
+            "tests/TestCase.php",
+            "tests/BrowserKitTestCase.php"
         ]
     },
     "scripts": {

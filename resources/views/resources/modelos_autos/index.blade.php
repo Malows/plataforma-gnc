@@ -33,8 +33,10 @@
                             <td>{{ $marca->nombre }}</td>
                             <td>{{ $modelo->nombre }}</td>
                             <td>
-                                <a href="{{ route('modelos_de_autos.edit', ['marcas_de_auto'=>$marca,'mopdelos_de_auto' =>$modelo]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                <a href="{{ route('modelos_de_autos.delete', ['marcas_de_auto'=>$marca,'mopdelos_de_auto' =>$modelo]) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+                                <div class="btn-group">
+                                    <a href="{{ route('modelos_de_autos.edit', ['marcas_de_auto'=>$marca,'mopdelos_de_auto' =>$modelo]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ route('modelos_de_autos.delete', ['marcas_de_auto'=>$marca,'mopdelos_de_auto' =>$modelo]) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

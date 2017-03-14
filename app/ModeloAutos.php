@@ -9,7 +9,7 @@ class ModeloAutos extends Model
     protected $table = 'modelos_autos';
 
     protected $fillable = [
-      'nombre', 'id_marca', 'id_usuario'
+      'nombre', 'marca_autos_id', 'user_id'
     ];
 
     public function marca()
@@ -27,7 +27,7 @@ class ModeloAutos extends Model
         return $this->hasMany('App\Vehiculo');
     }
 
-    public function scopeOwnerOrAdmin($query, $user)
+    public function scopeOwnerOrAdmin($query, User $user)
     {
         if ( $user->es_admin() )
             return $query;

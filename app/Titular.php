@@ -11,8 +11,8 @@ class Titular extends Model
 
     protected $table = 'titulares';
 
-    protected $fillable = [ 'nombre', 'apellido', 'dni', 'domicilio', 'id_localidad', 'telefono',
-        'email', 'contacto', 'id_usuario' ];
+    protected $fillable = [ 'nombre', 'apellido', 'dni', 'domicilio', 'localidad_id', 'telefono',
+        'email', 'contacto', 'user_id' ];
 
     protected $dates = ['deleted_at'];
 
@@ -31,4 +31,11 @@ class Titular extends Model
     return $this->belongsTo('App\User');
     }
 
+    public function scopeOwnerOrAdmin($query, User $user)
+    {
+        if ( $user->es_admin() ) {
+            return $query->withTrashed();
+        }
+        return $query->where('user_id', $user->id);
+    }
 }

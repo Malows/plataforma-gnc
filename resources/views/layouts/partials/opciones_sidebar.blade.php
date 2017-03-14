@@ -1,52 +1,22 @@
-<li class="active">
+<li>
     <a href="{{ route('dashboard') }}"><i class='fa fa-home'></i> <span>{{ trans('message.home') }}</span></a>
 </li>
-@if(Auth::user()->tipo_usuario_id <= 6)
-    @include('layouts.partials.opciones.bronce')
+@includeWhen( Auth::user()->tipo_usuario_id <= 6, 'layouts.partials.opciones.bronce')
+@includeWhen( Auth::user()->tipo_usuario_id <= 5, 'layouts.partials.opciones.plata')
+@includeWhen( Auth::user()->tipo_usuario_id <= 4, 'layouts.partials.opciones.oro')
+@includeWhen( Auth::user()->tipo_usuario_id <= 3, 'layouts.partials.opciones.platino')
+@includeWhen( Auth::user()->tipo_usuario_id <= 2, 'layouts.partials.opciones.diamante')
 
-    @if(Auth::user()->tipo_usuario_id <= 5)
-        @include('layouts.partials.opciones.plata')
+<li class="treeview">
+    <a href="#"><i class='fa fa-link'></i> <span>Recursos</span> <i class="fa fa-angle-left pull-right"></i></a>
+    <ul class="treeview-menu">
+        @includeWhen(Auth::user()->tipo_usuario_id <= 6, 'layouts.partials.opciones.bronce_recursos')
+        @includeWhen(Auth::user()->tipo_usuario_id <= 5, 'layouts.partials.opciones.plata_recursos')
+        @includeWhen(Auth::user()->tipo_usuario_id <= 4, 'layouts.partials.opciones.oro_recursos')
+        @includeWhen(Auth::user()->tipo_usuario_id <= 3, 'layouts.partials.opciones.platino_recursos')
+        @includeWhen(Auth::user()->tipo_usuario_id <= 2, 'layouts.partials.opciones.diamante_recursos')
+    </ul>
+</li>
+@includeWhen( Auth::user()->es_admin(), 'layouts.partials.opciones.admin')
+@includeWhen( Auth::user()->es_admin(), 'layouts.partials.opciones.admin_recursos')
 
-        @if(Auth::user()->tipo_usuario_id <= 4)
-            @include('layouts.partials.opciones.oro')
-
-            @if(Auth::user()->tipo_usuario_id <= 3)
-                @include('layouts.partials.opciones.platino')
-
-                @if(Auth::user()->tipo_usuario_id <= 2)
-                    @include('layouts.partials.opciones.diamante')
-
-                    @if(Auth::user()->es_admin())
-                        @include('layouts.partials.opciones.admin')
-                    @endif
-                @endif
-            @endif
-        @endif
-    @endif
-@endif
-
-
-@if(Auth::user()->tipo_usuario_id <= 6)
-    @include('layouts.partials.opciones.bronce_scripts')
-
-    @if(Auth::user()->tipo_usuario_id <= 5)
-        @include('layouts.partials.opciones.plata_scripts')
-
-        @if(Auth::user()->tipo_usuario_id <= 4)
-            @include('layouts.partials.opciones.oro_scripts')
-
-            @if(Auth::user()->tipo_usuario_id <= 3)
-                @include('layouts.partials.opciones.platino_scripts')
-
-                @if(Auth::user()->tipo_usuario_id <= 2)
-                    @include('layouts.partials.opciones.diamante_scripts')
-
-                    @if(Auth::user()->es_admin())
-                        @include('layouts.partials.opciones.admin_scripts')
-
-                    @endif
-                @endif
-            @endif
-        @endif
-    @endif
-@endif

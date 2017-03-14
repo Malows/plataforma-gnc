@@ -5,5 +5,4 @@
         <li><a href="{{ route('usuarios.index') }}">{{ trans('message.usuarios') }}</a></li>
         <li><a href="{{ route('tipo_de_usuarios.index') }}">{{ trans('message.tipo_de_usuarios') }}</a></li>
     </ul>
-
 </li>

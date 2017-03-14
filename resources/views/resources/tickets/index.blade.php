@@ -9,10 +9,10 @@
 
 @section('main-content')
     <div class="container-fluid spark-screen">
+        <a href="{{ route('tickets.create') }}" class="pull-right btn btn-primary">Nuevo ticket</a>
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ route('tickets.create') }}" class="pull-right btn btn-primary">Nuevo ticket</a>
                 @include('layouts.partials.flashMessage')
                 @foreach($tickets as $tic)
                     <div class="col-md-6 col-md-offset-3 box">

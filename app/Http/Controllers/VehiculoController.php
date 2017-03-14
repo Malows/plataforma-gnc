@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\MarcaAutos;
+use App\ModeloAutos;
+use App\Titular;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Vehiculo;
@@ -15,16 +19,13 @@ class VehiculoController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $vehiculos = ( $user->es_admin() ) ?
-          Vehiculo::all() : Vehiculo::where('id_usuario', $user->id_usuario);
-        $vehiculos->sortBy('update_at')->paginate(20);
+        $vehiculos = Vehiculo::ownerOrAdmin( Auth::user() )->orderBy('updated_at')->paginate(20);
         $vehiculos->each(function($vehiculo){
-          $vehiculo->titular;
-          $vehiculo->marca;
-          $vehiculo->modelo;
+            $vehiculo->titular;
+            $vehiculo->modelo;
+            $vehiculo->marca;
         });
-        return view('')->with('vehiculos',$vehiculos);
+        return view('resources.vehiculos.index', ['vehiculos' => $vehiculos]);
     }
 
     /**
@@ -34,7 +35,18 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        return view('');
+        $titulares = Titular::ownerOrAdmin( Auth::user() )->select('nombre', 'apellido', 'id')
+        ->orderBy('apellido')->orderBy('nombre')->get();
+        $titulares->each( function ($t){
+            $t->full_name = $t->apellido . ', ' . $t->nombre;
+            unset( $t->nombre );
+            unset( $t->apellido );
+        });
+        $aux = array_pluck($titulares->toArray(), 'full_name', 'id');
+
+        $marcas = MarcaAutos::pluck('nombre', 'id');
+
+        return view('resources.vehiculos.create', ['titulares'=>$aux, 'marcas' => $marcas]);
     }
 
     /**
@@ -45,9 +57,11 @@ class VehiculoController extends Controller
      */
     public function store(Request $request)
     {
+
         $vehiculo = new Vehiculo( $request->all() );
-        $vehiculo->id_usuario = Auth::user()->id;
+        $vehiculo->user_id = Auth::user()->id;
         $vehiculo->save();
+        flash('Vehículo creado correctamente','success');
         return redirect()->route('vehiculos.index');
     }
 
@@ -59,11 +73,14 @@ class VehiculoController extends Controller
      */
     public function show($id)
     {
-        $vehiculo = Vehiculo::find($id);
+        $vehiculo = Vehiculo::ownerOrAdmin( Auth::user() )->find($id);
         $vehiculo->marca;
         $vehiculo->modelo;
         $vehiculo->titular;
-        return view('')->with('vehiculo',$vehiculo);
+//        if( Auth::user()->tipo_usuario_id <= 5 ) {
+//            $vehiculo->trabajos_de_taller;
+//        }
+        return view('resources.vehiculos.show', ['vehiculo' => $vehiculo]);
     }
 
     /**
@@ -74,11 +91,25 @@ class VehiculoController extends Controller
      */
     public function edit($id)
     {
-        $vehiculo = Vehiculo::find($id);
-        $vehiculo->marca;
+        $vehiculo = Vehiculo::ownerOrAdmin(Auth::user())->find($id);
         $vehiculo->modelo;
+        $vehiculo->marca = $vehiculo->modelo->marca;
         $vehiculo->titular;
-        return view('')->with('vehiculo',$vehiculo);
+
+        $titulares = Titular::ownerOrAdmin( Auth::user() )->select('nombre', 'apellido', 'id')
+            ->orderBy('apellido')->orderBy('nombre')->get();
+        $titulares->each( function ($t){
+            $t->full_name = $t->apellido . ', ' . $t->nombre;
+            unset( $t->nombre );
+            unset( $t->apellido );
+        });
+        $aux = array_pluck($titulares->toArray(), 'full_name', 'id');
+
+        $marcas = MarcaAutos::pluck('nombre', 'id')->toArray();
+        $modelos = ModeloAutos::where('marca_autos_id', $vehiculo->marca_id)->pluck('nombre','id')->toArray();
+
+        return view('resources.vehiculos.edit',
+            ['vehiculo' => $vehiculo, 'titulares' => $aux, 'marcas' => $marcas, 'modelos' => $modelos]);
     }
 
     /**
@@ -90,10 +121,9 @@ class VehiculoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $vehiculo = Vehiculo::find($id);
+        $vehiculo = Vehiculo::ownerOrAdmin( Auth::user() )->find($id);
         $vehiculo->fill( $request->all() );
-        $vehiculo->id_usuario = ( $vehiculo->id_usuario ) ?
-          $vehiculo->id_usuario : Auth::user()->id;
+        $vehiculo->user_id = ( $vehiculo->user_id ) ? $vehiculo->user_id : Auth::user()->id;
         $vehiculo->save();
         return redirect()->route('vehiculos.index');
 
@@ -107,7 +137,7 @@ class VehiculoController extends Controller
      */
     public function destroy($id)
     {
-        $vehiculo = Vehiculo::find($id);
+        $vehiculo = Vehiculo::ownerOrAdmin( Auth::user() )->find($id);
         $vehiculo->delete();
         flash('Vehículo eliminado correctamente. Para restaurar el vehículo eliminar, consulte un administrador','info');
         return redirect()->route('vehiculos.index');
@@ -121,7 +151,7 @@ class VehiculoController extends Controller
      */
     public function erase( int $id )
     {
-        $vehiculo = Vehiculo::find( $id );
+        $vehiculo = Vehiculo::ownerOrAdmin( Auth::user() )->find( $id );
         $vehiculo->forceDelete();
         flash('Vehiculo borrado permanentemente','warning');
         return redirect()->route('vehiculos.index');
@@ -135,9 +165,27 @@ class VehiculoController extends Controller
      */
     public function restore( int $id )
     {
-        $vehiculo = Vehiculo::find( $id );
+        $vehiculo = Vehiculo::ownerOrAdmin( Auth::user() )->find( $id );
         $vehiculo->restore();
         flash('Vehiculo restaurado correctamente','success');
         return redirect()->route('vehiculos.index');
+    }
+
+    public function  api_index(Request $request)
+    {
+        $user = User::find( $request->user );
+        $vehiculos = Vehiculo::ownerOrAdmin($user)
+            ->where('titular_id', $request->titular)->select('dominio', 'id', 'marca_id', 'modelo_id')->limit(100)->get();
+        $vehiculos->each(function ($v){
+            $v->marca;
+            $v->modelo;
+            $v->nombre = $v->marca->nombre. " " . $v->modelo->nombre . " - " . $v->dominio;
+            unset($v->marca);
+            unset($v->modelo);
+            unset($v->dominio);
+            unset($v->marca_id);
+            unset($v->modelo_id);
+        });
+        return ['data' => [ 'vehiculos' => $vehiculos]];
     }
 }

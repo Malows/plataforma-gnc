@@ -52,7 +52,7 @@
                         <li class="footer"><a href="{{ route('mensajes.index') }}">{{ trans('message.viewall') }}</a></li>
                     </ul>
                 </li><!-- /.messages-menu -->
-                @if( Auth::user()->es_admin() and $tickets->count() )
+                @if( Auth::user()->es_admin() )
                 <!-- Notifications Menu -->
                 <li class="dropdown notifications-menu">
                     <!-- Menu toggle button -->
@@ -61,13 +61,13 @@
                         <span class="label label-warning">{{ $tickets->count() }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">{{ trans('message.notifications') }}</li>
+                        <li class="header">{{ trans_choice('message.n_notifications', $tickets->count(),['count' => $tickets->count()]) }}</li>
                         <li>
                             <!-- Inner Menu: contains the notifications -->
                             <ul class="menu">
                                 @foreach( $tickets as $ticket)
                                 <li><!-- start notification -->
-                                    <a href="#">
+                                    <a href="{{ route('tickets.show', $ticket) }}">
                                         <i class="fa fa-bell"></i> {{ $ticket->mensaje }}
                                     </a>
                                 </li><!-- end notification -->

@@ -20,6 +20,7 @@ class AlteUsersTableAddTipoUsuario extends Migration
             ->onDelete('cascade')->onUpdate('cascade');
 
           $table->boolean('habilitado')->default(true);
+          $table->timestamp('asistencia_inmediata')->nullable();
           $table->timestamp('fecha_de_licencia')->default(DB::raw('CURRENT_TIMESTAMP'));
           $table->unsignedBigInteger('duracion_de_licencia');
 

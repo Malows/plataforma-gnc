@@ -22,10 +22,10 @@ class CreatedVehiculosTable extends Migration
               ->references('id')->on('titulares')
               ->onDelete('cascade')->onUpdate('cascade');
 
-            // $table->unsignedInteger('marca_id');
-            // $table->foreign('marca_id')
-            //   ->references('id')->on('marcas_autos')
-            //   ->onUpdate('cascade');
+            $table->unsignedInteger('marca_id');
+            $table->foreign('marca_id')
+                ->references('id')->on('marcas_autos')
+                ->onUpdate('cascade');
 
             $table->unsignedInteger('modelo_id');
             $table->foreign('modelo_id')
@@ -35,7 +35,7 @@ class CreatedVehiculosTable extends Migration
             $table->unsignedInteger('user_id')->default(1);
             $table->foreign('user_id')
               ->references('id')->on('users')
-              ->onUpdate('cascade');
+              ->onDelete('set default')->onUpdate('cascade');
 
             $table->unsignedInteger('año');
             $table->timestamps();

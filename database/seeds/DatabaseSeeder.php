@@ -17,6 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call(MarcasAutosTableSeeder::class);
         $this->call(LocalidadesTableSeeder::class);
         $this->call(ModelosAutosTableSeeder::class);
-
+        $this->call(ServiciosDeTallerSeeder::class);
+        $this->call(TitularesTableSeeder::class);
+        $this->call(VehiculosTableSeeder::class);
+        $this->call(ServiciosDeTallerSeeder::class);
+        $this->call(MarcasDeCilindrosSeeder::class);
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Localidad;
+use App\Provincia;
+use App\User;
 use Illuminate\Support\Facades\Auth;
-//use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-//use Illuminate\View\View;
 use App\Titular;
 use App\Vehiculo;
 
@@ -19,13 +20,7 @@ class TitularController extends Controller
      */
     public function index()
     {
-        $titulares = NULL;
-        if ( Auth::user()->es_admin() ){
-            $titulares = Titular::paginate(20);
-        } else {
-            $titulares = Titular::where('user_id', Auth::user()->id)
-                ->sortBy('apellido')->sortBy('nombre')->paginate(20);
-        }
+        $titulares = Titular::ownerOrAdmin( Auth::user() )->orderBy('apellido')->orderBy('nombre')->paginate(20);
         return view('resources.titulares.index')->with('titulares',$titulares);
     }
 
@@ -36,7 +31,8 @@ class TitularController extends Controller
      */
     public function create()
     {
-        return view('resources.titulares.create');
+        $provincias = Provincia::pluck('nombre','id');
+        return view('resources.titulares.create', ['provincias' => $provincias]);
     }
 
     /**
@@ -62,7 +58,7 @@ class TitularController extends Controller
      */
     public function show($id)
     {
-        $titular = Titular::find($id);
+        $titular = Titular::ownerOrAdmin( Auth::user() )->find($id);
         $titular->vehiculos;
         $titular->localidad;
         return view('resources.titulares.show')->with('titular',$titular);
@@ -76,9 +72,13 @@ class TitularController extends Controller
      */
     public function edit($id)
     {
-        $titular = Titular::find($id);
+        $provincias = Provincia::pluck('nombre','id');
+        $titular = Titular::ownerOrAdmin(Auth::user() )->find($id);
         $titular->vehiculos;
-        return view('resources.titulares.edit')->with('titular',$titular);
+        $titular->localidad;
+        $localidades = Localidad::where('provincia_id',$titular->localidad->provincia_id)->pluck('nombre','id');
+        return view('resources.titulares.edit',
+            ['titular' => $titular, 'provincias'=> $provincias,'localidades' =>$localidades]);
     }
 
     /**
@@ -90,7 +90,7 @@ class TitularController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $titular = Titular::find($id);
+        $titular = Titular::ownerOrAdmin( Auth::user() )->find($id);
         $titular->fill( $request->all() );
         $titular->user_id = ( $titular->user_id ) ? $titular->user_id : Auth::user()->id;
         $titular->save();
@@ -106,7 +106,7 @@ class TitularController extends Controller
      */
     public function delete( int $id )
     {
-        $titular = Titular::find( $id );
+        $titular = Titular::ownerOrAdmin( Auth::user() )->find( $id );
         $titular->vehiculos;
         return view('resources.titulares.delete')->with('titular',$titular);
     }
@@ -119,7 +119,11 @@ class TitularController extends Controller
      */
     public function destroy($id)
     {
-        $titular = Titular::find($id);
+        $titular = Titular::ownerOrAdmin( Auth::user() )->find($id);
+        $titular->vehiculos;
+        $titular->vehiculos->each(function ($v){
+            $v->delete();
+        });
         $titular->delete();
         flash('Titular eliminado correctamente. Para restaurar el titular eliminar, consulte un administrador','info');
         return redirect()->route('titulares.index');
@@ -133,7 +137,7 @@ class TitularController extends Controller
      */
     public function erase( $id )
     {
-        $titular = Titular::find( $id );
+        $titular = Titular::ownerOrAdmin( Auth::user() )->find( $id );
         $titular->forceDelete();
         flash('Titular borrado permanentemente','warning');
         return redirect()->route('titulares.index');
@@ -147,9 +151,20 @@ class TitularController extends Controller
      */
     public function restore( $id )
     {
-        $titular = Titular::find( $id );
+        $titular = Titular::ownerOrAdmin( Auth::user() )->find( $id );
         $titular->restore();
         flash('Titular restaurado correctamente','success');
         return redirect()->route('titulares.index');
+    }
+
+    public function api_index(Request $request)
+    {
+        $user = User::find( $request->user );
+        $titulares = Titular::ownerOrAdmin($user)
+            ->where('nombre', 'like', '%'.$request->value.'%')
+            ->whereOr('apellido', 'like', '%'.$request->value.'%')
+            ->select('nombre', 'apellido', 'id')
+            ->limit(100)->get();
+        return ['data' => [ 'titulares' => $titulares]];
     }
 }

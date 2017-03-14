@@ -26,7 +26,7 @@ class CreateModelosAutosTable extends Migration
             ->comment("Quien registró el modelo de autos, si fletamos usuario, nos quedamos con sus datos");
             $table->foreign('user_id')
             ->references('id')->on('users')
-            ->onUpdate('cascade');
+            ->onDelete('set default')->onUpdate('cascade');
 
             $table->timestamps();
         });

@@ -35,11 +35,13 @@
                             <td>{{ $provincia->nombre }}</td>
                             <td>{{ $loc->nombre }}</td>
                             <td>
-                                <a href="{{ route('localidades.show', ['provincia' => $provincia, 'localidade' => $loc]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                @if(Auth::user()->es_admin())
-                                    <a href="{{ route('localidades.edit', ['provincia' => $provincia, 'localidade' => $loc]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                    <a href="{{ route('localidades.delete', ['provincia' => $provincia, 'localidade' => $loc]) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
-                                @endif
+                                <div class="btn-group" role="group">
+                                    <a href="{{ route('localidades.show', ['provincia' => $provincia, 'localidade' => $loc]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                    @if(Auth::user()->es_admin())
+                                        <a href="{{ route('localidades.edit', ['provincia' => $provincia, 'localidade' => $loc]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('localidades.delete', ['provincia' => $provincia, 'localidade' => $loc]) }}" class="btn btn-primary"><i class="fa fa-trash"></i></a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforeach
